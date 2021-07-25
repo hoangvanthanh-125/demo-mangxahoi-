@@ -1,13 +1,83 @@
 body {
+  background-color:rgb(223, 223, 233);
+  /* background-color: rgb(217, 243, 243); */
+  /* background-image: linear-gradient(rgb(33, 126, 126),rgb(184, 226, 184)); */
+
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+.MuiSvgIcon-root {
+  cursor: pointer;
+}
+.icon-tym {
+  color: red;
+}
+.wrap-title {
+  color: black;
+}
+.wrap-title > span {
+  font-size: 50px;
+  font-weight: bold;
+  
+}
+/* .name-app{
+font-size: x-large;
+} */
+@keyframes hien {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.name-app-1 {
+  animation: hien 1.8s ease-in;
+}
+.name-app-2 {
+  animation: hien 2.1s ease-in;
+}
+.name-app-3 {
+  animation: hien 2.4s ease-in;
+}
+.name-app-4 {
+  animation: hien 2.7s ease-in;
+}
+.name-app-5 {
+  animation: hien 3s ease-in;
+}
+.name-app-6 {
+  animation: hien 3.3s ease-in;
+}
+.name-app-7 {
+  animation: hien 3.6s ease-in;
+}
+.name-app-8 {
+  animation: hien 3.9s ease-in;
+}
+.name-app-9 {
+  animation: hien 4.2s ease-in;
+}
+.name-app-10 {
+  animation: hien 4.5s ease-in;
+}
+@keyframes animationButton {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+.MuiGrid-root .MuiButton-root {
+  animation: animationButton 1.5s;
+  width: 300px;
 }

@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createTheme, ThemeProvider } from "@material-ui/core";
+import React from "react";
+import {
+  BrowserRouter as Router, Route,
+  Switch
+} from "react-router-dom";
+import "./App.css";
+import UserLayoutRoute from "./common/layout/UserLayoutRoute";
+import Login from "./components/Login/Login";
+import { USER_ROUTER } from "./contstans/route";
 
+const theme = createTheme({
+  palette: {},
+});
 function App() {
+  const renderUserRouter = () => {
+    let xhtml = null;
+    if (USER_ROUTER.length > 0) {
+      xhtml = USER_ROUTER.map((item, index) => {
+        return <UserLayoutRoute key={index} component={item.component} path={item.path} exact={item.exact} />;
+      });
+    }
+    console.log(xhtml);
+    
+    return xhtml;
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <Switch>
+            {renderUserRouter()}
+            <Route path="/login">
+              <Login />
+            </Route>
+          </Switch>
+        </div>
+      </ThemeProvider>
+    </Router>
   );
 }
 
