@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import UserLayoutRoute from "./common/layout/UserLayoutRoute";
+import ModalCommon from "./common/Modal/Modal";
 import Login from "./components/Login/Login";
 import { USER_ROUTER } from "./contstans/route";
 
@@ -28,6 +29,7 @@ function App() {
     <Router>
       <ThemeProvider theme={theme}>
         <div className="App">
+          <ModalCommon />
           <Switch>
             {renderUserRouter()}
             <Route path="/login">

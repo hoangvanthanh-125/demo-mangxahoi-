@@ -6,7 +6,6 @@ import {
   Popover,
   Typography,
 } from "@material-ui/core";
-import iconLoading from "./../../acssets/iconLoading.gif";
 import React, { useEffect, useState } from "react";
 import { COMMENT, POST } from "../../interfaces/postInterface";
 import useStyles from "./style";
@@ -15,6 +14,8 @@ import firebase from "firebase";
 import { AsyncUser } from "../../common/AsyncUser";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { updatePostActions } from "../../redux/actions/postAction";
+import { uiActions } from "../../redux/slice/uiSilce";
+import iconLoading from '../../acssets/iconLoading.gif'
 interface Props {
   item: COMMENT;
   post: POST;
@@ -22,7 +23,6 @@ interface Props {
 function CommentItem({ item, post }: Props) {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
@@ -74,6 +74,13 @@ function CommentItem({ item, post }: Props) {
     setEdiiting(false);
   };
   const deleteCmt = async () => {
+    dispatch(uiActions.openModal());
+    dispatch(uiActions.fetchBodyModal(
+      <div className={classes.wrapLoadDelete}>
+        <img src='https://i.gifer.com/ZZ5H.gif' alt='Loading' />
+        <Typography>Đang xóa bình luận</Typography>
+      </div>
+    ))
     const { listComment } = post;
     const index = listComment.findIndex(
       (cmt) => cmt.idComment === item.idComment
@@ -89,6 +96,7 @@ function CommentItem({ item, post }: Props) {
       })
     );
     setAnchorEl(null);
+    dispatch(uiActions.closeModal());
   };
   const onChangeCmt = (e: any) => {
     setContentCmt(e.target.value);

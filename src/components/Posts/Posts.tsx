@@ -7,11 +7,9 @@ import FormPost from '../FormPost/FormPost';
 import PostItem from '../PostItem/PostItem';
 
 function Posts() {
-  // const { loading } = useAppSelector((state) => state.posts);
+  const { loading } = useAppSelector((state) => state.posts);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-   dispatch(fetchAllPostActions())
-  },[])
+ 
   const { listPost } = useAppSelector(state => state.posts)
   const renderListPosts = () => {
     let xhtml = null;

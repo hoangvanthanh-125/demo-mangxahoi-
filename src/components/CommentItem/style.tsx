@@ -83,5 +83,15 @@ export default makeStyles(() => ({
         opacity:0.7
       }
     }
+  },
+  wrapLoadDelete:{
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    '& img':{
+      width:30,
+      height:30,
+      marginRight:15
+    }
   }
 }));

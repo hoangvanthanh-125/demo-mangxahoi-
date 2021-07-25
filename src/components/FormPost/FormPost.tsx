@@ -1,17 +1,16 @@
 import { Avatar, Button, Grid, Modal, Typography } from "@material-ui/core";
+import ClearIcon from "@material-ui/icons/Clear";
 import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
 import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import { AsyncUser } from "../../common/AsyncUser";
-import { listColor } from "./../../contstans/posts";
-import useStyles from "./Style";
-import ClearIcon from "@material-ui/icons/Clear";
-import { useAppDispatch } from "../../redux/hook";
 import { COMMENT, POST } from "../../interfaces/postInterface";
 import { USER } from "../../interfaces/userInterface";
-import { postActions } from "../../redux/slice/postSlice";
 import { addListPostActions } from "../../redux/actions/postAction";
+import { useAppDispatch } from "../../redux/hook";
+import { listColor } from "./../../contstans/posts";
+import useStyles from "./Style";
 function FormPost() {
   const dispatch = useAppDispatch();
   const classes = useStyles();
