@@ -8,6 +8,7 @@ export default makeStyles((theme) => ({
     position: 'absolute',
     width: '50vw',
     height:'auto',
+    maxHeight:'50vh',
     padding:30,
     backgroundColor: 'white',
     outline:'none',
@@ -21,9 +22,16 @@ export default makeStyles((theme) => ({
     
   },
   header:{
-
+    boxSizing:'border-box',
+    display:'flex',
+    justifyContent:'flex-start',
+    alignItems:'center',
+    padding:10,
+    borderBottom:'1px solid lightgray',
+    fontWeight:'bold',
+    
   },
   body:{
-
+     
   }
 }))

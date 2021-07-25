@@ -40,16 +40,14 @@ const postSlice = createSlice({
     state.error = action.error.message;
   })
   .addCase(updatePostActions.pending,(state) => {
-    state.loading = true;
   })
   .addCase(updatePostActions.fulfilled,(state,action) => {
-    state.loading = false;
+   
     const index = state.listPost.findIndex(item => item.postId ===action.payload.postId);
     state.listPost[index] = action.payload;
   } )
   .addCase(updatePostActions.rejected,(state,action) => {
     state.error = action.error.message;
-    state.loading = false;
   })
 
 })

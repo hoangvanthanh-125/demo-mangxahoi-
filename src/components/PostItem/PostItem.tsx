@@ -11,6 +11,7 @@ import firebase from "firebase";
 import { useAppDispatch } from "../../redux/hook";
 import { updatePostActions } from "../../redux/actions/postAction";
 import { useHistory } from "react-router-dom";
+import { uiActions } from "../../redux/slice/uiSilce";
 interface PropsPostItem {
   post: POST;
 }
@@ -30,6 +31,22 @@ function PostItem({ post }: PropsPostItem) {
   const [user, setUser] = useState<any>(null);
   const [isLike, setLike] = useState(false);
   const dispatch = useAppDispatch();
+  const existsMe = post.listLike.findIndex((item) => item.uid === user?.uid);
+  var displayTotalLike = "";
+  if (post.listLike.length === 0) {
+    displayTotalLike = "";
+  } else {
+    displayTotalLike =
+      existsMe >= 0
+        ? post.listLike.length > 1
+          ? `Bạn và ${post.listLike.length - 1} người khác`
+          : `${listLike[0].displayName}`
+        : post.listLike.length > 1
+        ? `${post.listLike[0].displayName} và ${
+            post.listLike.length - 1
+          } người khác`
+        : `${listLike[0].displayName}`;
+  }
 
   const handleClickLike = async () => {
     await setLike((prev) => !prev);
@@ -82,7 +99,23 @@ function PostItem({ post }: PropsPostItem) {
       }
     }
   }, [user]);
- 
+  const renderPeopleLike = () => {
+    let xhtml = null;
+    if(post.listLike.length > 0) {
+      xhtml = post.listLike.map(user => (
+        <div className={classes.wrapListPeopleLike} key={user.uid}>
+          <Avatar src={user.photoURL}  />
+          <Typography className={classes.nameUserLike}>{user.displayName}</Typography>
+        </div>
+      ))
+    }
+    return xhtml;
+  };
+  const clickDisplayPeoPleLike = () => {
+    dispatch(uiActions.openModal());
+    dispatch(uiActions.fetchHeaderModal('Danh sách thả tym <3'));
+    dispatch(uiActions.fetchBodyModal(renderPeopleLike()))
+  };
   return (
     <Grid item sm={12} xs={12} md={12}>
       <div className={classes.card}>
@@ -97,27 +130,33 @@ function PostItem({ post }: PropsPostItem) {
         </div>
 
         <div>
-        <div className={classes.wrapContent} onClick={() => history.push(`/comment/${id}`)}>
-        {urlImage ? (
-            <div className={classes.cardContent}>
-              <p>{title}</p>
-              <img className={classes.image} src={urlImage} alt="Loading" />
-            </div>
-          ) : (
-            <div
-              className={classes.blockTitle}
-              style={{ background: `${color}` }}
-            >
-              {title}
-            </div>
-          )}
-        </div>
-          <div className={classes.totalLikeCmt}>
-            <Typography variant="caption">
-              {listLike.length} lượt thích
+          <div
+            className={classes.wrapContent}
+            onClick={() => history.push(`/comment/${id}`)}
+          >
+            {urlImage ? (
+              <div className={classes.cardContent}>
+                <p>{title}</p>
+                <img className={classes.image} src={urlImage} alt="Loading" />
+              </div>
+            ) : (
+              <div
+                className={classes.blockTitle}
+                style={{ background: `${color}` }}
+              >
+                {title}
+              </div>
+            )}
+          </div>
+          <div
+            onClick={() => clickDisplayPeoPleLike()}
+            className={classes.totalLikeCmt}
+          >
+            <Typography className={classes.totalLike} variant="caption">
+              {displayTotalLike}
             </Typography>
             <Typography variant="caption">
-              {listComment.length} comment
+              {post.listComment.length > 0 ?` ${listComment.length} comment` :''}
             </Typography>
           </div>
           <div className={classes.cardAction}>
@@ -133,7 +172,10 @@ function PostItem({ post }: PropsPostItem) {
               )}
             </div>
 
-            <div className={classes.boxComment} onClick={() => history.push(`/comment/${id}`) }>
+            <div
+              className={classes.boxComment}
+              onClick={() => history.push(`/comment/${id}`)}
+            >
               <ChatBubbleOutlineOutlinedIcon className={classes.icon} />
             </div>
           </div>

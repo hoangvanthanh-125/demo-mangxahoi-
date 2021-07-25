@@ -1,12 +1,14 @@
 import React from 'react';
 import Modal from '@material-ui/core/Modal';
-import { useAppSelector } from '../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import useStyle from  './style'
+import { uiActions } from '../../redux/slice/uiSilce';
 function ModalCommon() {
+  const dispatch = useAppDispatch();
   const classes = useStyle();
   const {isOpen,bodyContent,header} = useAppSelector(state => state.ui)
   const handleClose = ( ) => {
-
+   dispatch(uiActions.closeModal())
   }
   return (
     <div>

@@ -53,6 +53,7 @@ export default makeStyles((theme) => ({
     },
   },
   cardAction: {
+    borderTop:'0.5px solid lightgray',
     boxSizing: "border-box",
     position: "relative",
 
@@ -65,7 +66,7 @@ export default makeStyles((theme) => ({
     paddingBottom: 20,
   },
   boxLike: {
-    background: "rgb(231, 227, 227)",
+    // background: "rgb(231, 227, 227)",
     padding: 5,
     boxSizing: "border-box",
     width: "45%",
@@ -73,7 +74,7 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
-    borderRadius: "13px",
+    // borderRadius: "13px",
 
     "&:hover": {
       "& > div": {
@@ -82,7 +83,7 @@ export default makeStyles((theme) => ({
     },
   },
   boxComment: {
-    background: "rgb(231, 227, 227)",
+    // background: "rgb(231, 227, 227)",
     width: "45%",
     display: "flex",
     alignItems: "center",
@@ -132,6 +133,13 @@ export default makeStyles((theme) => ({
       color: "gray",
     },
   },
+  totalLike:{
+   cursor:'pointer',
+  
+   "&:hover":{
+    textDecoration:'underline'
+   }
+  },
   blockTitle: {
     boxSizing: "border-box",
     padding: "15px 15px",
@@ -150,4 +158,17 @@ export default makeStyles((theme) => ({
       height: "100%",
     },
   },
+  wrapListPeopleLike:{
+    width:'100%',
+    marginTop:10,
+    display:'flex',
+    justifyContent:'flex-start',
+    alignItems:'center',
+    boxSizing:'border-box',
+    padding:10,
+   
+  },
+  nameUserLike:{
+    marginLeft:15
+  }
 }));
