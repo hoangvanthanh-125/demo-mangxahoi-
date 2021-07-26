@@ -17,6 +17,7 @@ export default makeStyles((theme) => ({
    
   },
   wrapHeader: {
+    position:'relative',
     display: "flex",
     // flexDirection:'column',
     alignItems: "center",
@@ -30,6 +31,11 @@ export default makeStyles((theme) => ({
     justifyContent: "flex-start",
     alignItems: "center",
     padding: "10px",
+  },
+  moreIcon:{
+  position:'absolute',
+  top:0,
+  right:5
   },
   nameuser: {
     fontWeight: "bold",

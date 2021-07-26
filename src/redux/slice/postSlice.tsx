@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { POST } from "../../interfaces/postInterface";
-import { addListPostActions, fetchAllPostActions, updatePostActions } from "../actions/postAction";
+import { addListPostActions, deletePostActions, fetchAllPostActions, updatePostActions } from "../actions/postAction";
 interface STATE {
   listPost:POST[],
   loading:boolean,
@@ -47,6 +47,16 @@ const postSlice = createSlice({
     state.listPost[index] = action.payload;
   } )
   .addCase(updatePostActions.rejected,(state,action) => {
+    state.error = action.error.message;
+  })
+  .addCase(deletePostActions.pending,(state) => {
+  })
+  .addCase(deletePostActions.fulfilled,(state,action) => {
+   
+    const index = state.listPost.findIndex(item => item.postId ===action.payload.postId);
+    state.listPost = state.listPost.filter(post=>post.id !== state.listPost[index].id)
+  } )
+  .addCase(deletePostActions.rejected,(state,action) => {
     state.error = action.error.message;
   })
 

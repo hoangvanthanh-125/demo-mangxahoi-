@@ -19,7 +19,7 @@ function ModalCommon() {
         aria-describedby="simple-modal-description"
       >
        <div className={classes.modal}>
-         <div className={classes.header} >
+         <div className={`${header!=='' ? classes.header:''}`}>
            {header}
          </div>
          <div className={classes.body} >
