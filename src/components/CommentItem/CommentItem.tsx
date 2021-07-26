@@ -1,21 +1,17 @@
 import {
-  Avatar,
-  Button,
-  Grid,
-  IconButton,
+  Avatar, IconButton,
   Popover,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { COMMENT, POST } from "../../interfaces/postInterface";
-import useStyles from "./style";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import firebase from "firebase";
+import React, { useEffect, useState } from "react";
 import { AsyncUser } from "../../common/AsyncUser";
-import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { COMMENT, POST } from "../../interfaces/postInterface";
 import { updatePostActions } from "../../redux/actions/postAction";
+import { useAppDispatch } from "../../redux/hook";
 import { uiActions } from "../../redux/slice/uiSilce";
-import iconLoading from '../../acssets/iconLoading.gif'
+import useStyles from "./style";
 interface Props {
   item: COMMENT;
   post: POST;

@@ -10,6 +10,7 @@ export default makeStyles((theme) => ({
     height:'auto',
     maxHeight:'50vh',
     padding:30,
+   
     backgroundColor: 'white',
     outline:'none',
     boxSizing:'border-box',

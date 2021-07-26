@@ -8,22 +8,22 @@ import {
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import FavoriteBorderSharpIcon from "@material-ui/icons/FavoriteBorderSharp";
 import FavoriteSharpIcon from "@material-ui/icons/FavoriteSharp";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import firebase from "firebase";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { AsyncUser } from "../../common/AsyncUser";
 import { POST } from "../../interfaces/postInterface";
 import { USER } from "../../interfaces/userInterface";
-import useStyles from "./style";
-import firebase from "firebase";
-import { useAppDispatch } from "../../redux/hook";
 import {
   deletePostActions,
   updatePostActions,
 } from "../../redux/actions/postAction";
-import { useHistory } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hook";
 import { uiActions } from "../../redux/slice/uiSilce";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import FormPost from "../FormPost/FormPost";
 import useStyles2 from "./../CommentItem/style";
-import { postActions } from "../../redux/slice/postSlice";
+import useStyles from "./style";
 interface PropsPostItem {
   post: POST;
 }
@@ -143,6 +143,7 @@ function PostItem({ post }: PropsPostItem) {
     setAnchorEl(null);
   };
   const handleDeletePost = async () => {
+    setAnchorEl(null);
     dispatch(uiActions.openModal());
     dispatch(uiActions.fetchHeaderModal(""));
     dispatch(
@@ -155,6 +156,11 @@ function PostItem({ post }: PropsPostItem) {
     );
     await dispatch(deletePostActions(post));
     dispatch(uiActions.closeModal());
+  };
+  const handleUpdatePost = () => {
+    setAnchorEl(null);
+    dispatch(uiActions.openModal());
+    dispatch(uiActions.fetchBodyModal(<FormPost post={post} />));
   };
   return (
     <Grid item sm={12} xs={12} md={12}>
@@ -191,7 +197,12 @@ function PostItem({ post }: PropsPostItem) {
             }}
           >
             <div className={classes2.popOver}>
-              <Typography className={classes2.popOverItem}>Sửa</Typography>
+              <Typography
+                onClick={() => handleUpdatePost()}
+                className={classes2.popOverItem}
+              >
+                Sửa
+              </Typography>
               <Typography
                 onClick={() => handleDeletePost()}
                 className={classes2.popOverItem}

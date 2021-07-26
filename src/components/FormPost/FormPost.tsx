@@ -7,15 +7,27 @@ import React, { useEffect, useState } from "react";
 import { AsyncUser } from "../../common/AsyncUser";
 import { COMMENT, POST } from "../../interfaces/postInterface";
 import { USER } from "../../interfaces/userInterface";
-import { addListPostActions } from "../../redux/actions/postAction";
+import {
+  addListPostActions,
+  updatePostActions,
+} from "../../redux/actions/postAction";
 import { useAppDispatch } from "../../redux/hook";
+import { uiActions } from "../../redux/slice/uiSilce";
 import { listColor } from "./../../contstans/posts";
 import useStyles from "./Style";
-function FormPost() {
+interface Props {
+  post?: POST;
+}
+function FormPost({ post }: Props) {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    if (post) {
+      dispatch(uiActions.closeModal());
+    }
+    setOpen(false);
+  };
   const [user, setUser] = useState<any>(null);
   const [color, setColor] = useState("white");
   const [image, setImage] = useState<any>(null);
@@ -30,6 +42,14 @@ function FormPost() {
       await setImage(e.target.files[0]);
     }
   };
+  useEffect(() => {
+    if (post) {
+      setOpen(true);
+      setUrl(post.urlImage);
+      setText(post.title);
+      setColor(post.color);
+    }
+  }, []);
   useEffect(() => {
     if (image) {
       setColor("white");
@@ -57,7 +77,6 @@ function FormPost() {
       );
     }
   }, [image]);
-  console.log(url);
 
   useEffect(() => {
     AsyncUser().then(() => {
@@ -65,6 +84,7 @@ function FormPost() {
       console.log(firebase.auth().currentUser);
     });
   }, []);
+
   const renderListColor = () => {
     let xhtml = listColor.map((color, index) => (
       <div
@@ -76,37 +96,55 @@ function FormPost() {
     ));
     return xhtml;
   };
+
   const handleClickClearImg = () => {
     setImage(null);
     setUrl(null);
   };
+
   const onChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  
-      setText(e.target.value);
-    
+    setText(e.target.value);
   };
-  const handleSubmit = async() => {
-    const currentUser: USER = {
-      displayName: user?.displayName,
-      email: user?.email,
-      photoURL: user?.photoURL,
-      uid: user?.uid,
-    };
-    const newPost:POST= {
-      postId:`post-${Math.random()*67267637624}-${Math.random()*145252}`,
-      createdAt: new Date(),
-      title: text,
-      color: color,
-      urlImage: url,
-      userPost: currentUser,
-      listLike: [] as USER[],
-      listComment: [] as COMMENT[],
-    };
-    await dispatch(addListPostActions(newPost));
+
+  const handleSubmit = async () => {
+    if (post) {
+      if (
+        post.color !== color ||
+        post.title !== text ||
+        post.urlImage !== url
+      ) {
+        const newPost: POST = {
+          ...post,
+          title: text,
+          color: color,
+          urlImage: url,
+        };
+        await dispatch(updatePostActions(newPost));
+      }
+    } else {
+      const currentUser: USER = {
+        displayName: user?.displayName,
+        email: user?.email,
+        photoURL: user?.photoURL,
+        uid: user?.uid,
+      };
+      const newPost: POST = {
+        postId: `post-${Math.random() * 67267637624}-${Math.random() * 145252}`,
+        createdAt: new Date(),
+        title: text,
+        color: color,
+        urlImage: url,
+        userPost: currentUser,
+        listLike: [] as USER[],
+        listComment: [] as COMMENT[],
+      };
+      await dispatch(addListPostActions(newPost));
+    }
     setOpen(false);
     setImage(null);
     setUrl(null);
-    setText('');
+    setText("");
+    dispatch(uiActions.closeModal());
   };
   return (
     <Grid
@@ -117,18 +155,27 @@ function FormPost() {
       sm={12}
     >
       <div className={classes.wrapPost}>
-        <div className={classes.post} onClick={() => setOpen(true)}>
-          {user?.displayName.split(" ")[0]} bạn đang nghĩ gì thế?
-        </div>
+        {!post && (
+          <div className={classes.post} onClick={() => setOpen(true)}>
+            {user?.displayName.split(" ")[0]} bạn đang nghĩ gì thế?
+          </div>
+        )}
       </div>
 
       <Modal open={open} onClose={handleClose}>
         <div className={classes.modal}>
           <div className={classes.header}>
             <KeyboardBackspaceIcon onClick={handleClose} />
-            <Typography variant="h6">Đăng bài viết</Typography>
-            <Button color="primary" variant="contained" size="small">
-              Đăng
+            <Typography variant="h6">
+              {post ? "Cập nhật bài viết" : "Đăng bài viết"}
+            </Typography>
+            <Button
+              onClick={() => handleSubmit()}
+              color="primary"
+              variant="contained"
+              size="small"
+            >
+              {post ? "Cập nhật" : "Đăng"}
             </Button>
           </div>
           <div className={classes.info}>
@@ -186,7 +233,7 @@ function FormPost() {
               fullWidth
               color="primary"
             >
-              Đăng
+              {post ? "Cập nhật" : "Đăng"}
             </Button>
           </div>
         </div>
