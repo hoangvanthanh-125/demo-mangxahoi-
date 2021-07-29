@@ -2,11 +2,16 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
   wrap:{
+    marginTop:15,
    
   borderRadius:'5px',
   background:'white',
   padding:10,
-  boxSizing:'border-box'
+  boxSizing:'border-box',
+  [theme.breakpoints.down('xs')]:{
+    marginTop:0,
+    borderRadius:0,
+  }
   },
   inputCmt:{
     boxSizing:'border-box',

@@ -23,7 +23,12 @@ const postSlice = createSlice({
   })
   .addCase(fetchAllPostActions.fulfilled,(state,action) => {
     state.loading = false;
-    state.listPost = action.payload;
+    state.listPost = action.payload.sort((post1:POST,post2:POST) => {
+      if(post1.createdAt > post2.createdAt){
+        return -1;
+      }
+      return 1;
+    });
   } )
   .addCase(fetchAllPostActions.rejected,(state,action) => {
     state.error = action.error.message;

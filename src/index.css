@@ -81,3 +81,9 @@ font-size: x-large;
   animation: animationButton 1.5s;
   width: 300px;
 }
+.activeLink > a > .MuiSvgIcon-root{
+color:red
+}
+.noActive > a{
+  color: black;
+}

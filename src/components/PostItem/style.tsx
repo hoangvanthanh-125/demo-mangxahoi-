@@ -13,7 +13,8 @@ export default makeStyles((theme) => ({
       border: "none",
       borderRadius: 0,
     },
-    marginBottom: 15,
+    marginTop:15
+    // marginBottom: 15,
    
   },
   wrapHeader: {
@@ -23,10 +24,14 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     "& span": {
       color: "grey",
-      fontSize: "x-small",
+      fontSize: 15,
+      [theme.breakpoints.down('xs')]:{
+        fontSize: 12,
+      }
     },
   },
   header: {
+    cursor:'pointer',
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
@@ -38,8 +43,20 @@ export default makeStyles((theme) => ({
   right:5
   },
   nameuser: {
+    
+    display:'flex',
+    flexDirection:'column',
+    justifyContent:'flex-start',
+    alignItems:'start',
+   
     fontWeight: "bold",
     marginLeft: 10,
+    
+  },
+  timePost:{
+    color:'gray',
+    fontSize:10
+
   },
   wrapContent: {
     cursor: "pointer",
@@ -165,16 +182,52 @@ export default makeStyles((theme) => ({
     },
   },
   wrapListPeopleLike:{
+     minHeight:'50vh',
+     height:'10vh',
+     overflowY:'auto',
+     '&::-webkit-scrollbar': {
+      width: '0.4em'
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.1)',
+      outline: '1px solid slategrey'},
+     [theme.breakpoints.down('xs')]:{
+       height:'60vh',
+     
+     
+     }
+
+  },
+ itemPeopleLike:{
+   cursor:'pointer',
     width:'100%',
-    marginTop:10,
+    // marginTop:10,
     display:'flex',
     justifyContent:'flex-start',
     alignItems:'center',
     boxSizing:'border-box',
-    padding:10,
+    paddingLeft:20,
+     padding:20,
+    height:100,
+    '&:hover':{
+      background:'lightgray'
+    },
+   
+   
    
   },
   nameUserLike:{
     marginLeft:15
-  }
+  },
+  headerModal:{
+    width:'100%',
+    display:'flex',
+    justifyContent:'space-between',
+    alignItems:'center'
+  },
+  
 }));

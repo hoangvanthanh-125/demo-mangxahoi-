@@ -1,8 +1,4 @@
-import {
-  Avatar, IconButton,
-  Popover,
-  Typography
-} from "@material-ui/core";
+import { Avatar, IconButton, Popover, Typography } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
@@ -65,18 +61,20 @@ function CommentItem({ item, post }: Props) {
           listComment: newListCmt,
         })
       );
-     
-    } 
+    }
     setEdiiting(false);
   };
   const deleteCmt = async () => {
     dispatch(uiActions.openModal());
-    dispatch(uiActions.fetchBodyModal(
-      <div className={classes.wrapLoadDelete}>
-        <img src='https://i.gifer.com/ZZ5H.gif' alt='Loading' />
-        <Typography>Đang xóa bình luận</Typography>
-      </div>
-    ))
+    dispatch(uiActions.fetchHeaderModal(''));
+    dispatch(
+      uiActions.fetchBodyModal(
+        <div className={classes.wrapLoadDelete}>
+          <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading" />
+          <Typography>Đang xóa bình luận</Typography>
+        </div>
+      )
+    );
     const { listComment } = post;
     const index = listComment.findIndex(
       (cmt) => cmt.idComment === item.idComment

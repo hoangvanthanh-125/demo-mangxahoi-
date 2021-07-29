@@ -8,8 +8,10 @@ export default makeStyles((theme) => ({
     position: 'absolute',
     width: '50vw',
     height:'auto',
-    maxHeight:'50vh',
+    maxHeight:'100vh',
+    maxWidth:'100vw',
     padding:30,
+    paddingTop:0,
    
     backgroundColor: 'white',
     outline:'none',
@@ -17,22 +19,27 @@ export default makeStyles((theme) => ({
     top: `${50}%`,
     left: `${50}%`,
     transform: `translate(-${50}%, -${50}%)`,
-    [theme.breakpoints.down('xs')]:{
-      width:'80vw'
+    [theme.breakpoints.down('sm')]:{
+      width:'100vw',
+      height:'100vh'
     }
     
   },
   header:{
     boxSizing:'border-box',
+    padding:10,
     display:'flex',
     justifyContent:'flex-start',
     alignItems:'center',
-    padding:10,
+    // // padding:10,
     borderBottom:'1px solid lightgray',
     fontWeight:'bold',
     
   },
   body:{
-     
+    //  display:'flex',
+    //  justifyContent:'center',
+    //  alignItems:'center',
+     paddingTop:20,
   }
 }))

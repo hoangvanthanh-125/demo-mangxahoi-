@@ -1,15 +1,16 @@
 import { Avatar, IconButton } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
 import SendIcon from "@material-ui/icons/Send";
 import firebase from "firebase";
-import { USER } from "../../interfaces/userInterface";
+import React, { useEffect, useState } from "react";
 import { AsyncUser } from "../../common/AsyncUser";
-import useStyles from "./style";
-import { COMMENT, POST } from "../../interfaces/postInterface";
-import axiosClient from "../../apis/axiosClient";
-import { updatePost } from "../../apis/postsApi/postApi";
-import { useAppDispatch } from "../../redux/hook";
+import { COMMENT, NOTIFY, POST } from "../../interfaces/postInterface";
+import { USER } from "../../interfaces/userInterface";
 import { updatePostActions } from "../../redux/actions/postAction";
+import { useAppDispatch } from "../../redux/hook";
+import useStyles from "./style";
+export const getId = () => {
+  return `${Math.random()*100000000000}-${Math.random()*999999999}`
+}
 interface Props {
   post: POST;
 }
@@ -54,6 +55,20 @@ function FormComment({ post }: Props) {
       };
       setText("");
       dispatch(updatePostActions(newPost));
+     if(post.userPost.uid !== user.uid){
+       firebase.firestore().collection('notify').add({
+         idPost:post.id,
+         uid:post.userPost.uid,
+         contentNotify:`đã bình luận về bài viết của bạn`,
+         created:Date.now() as number,
+         idNotify:getId(),
+         photoURL:user.photoURL,
+         nameUserMadeNotify:user?.displayName,
+         watched:false,
+         clicked:false
+
+       } as NOTIFY)
+     }
     }
   };
   return (

@@ -21,7 +21,10 @@ export default makeStyles((theme) => ({
     alignItems:'center',
   },
   headerMiddle:{
-    flex:0.5,
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    flex:0.7,
    [theme.breakpoints.down('xs')]:{
      display:'none'
    }
@@ -31,8 +34,11 @@ export default makeStyles((theme) => ({
     display:'flex',
     justifyContent:'space-around',
     alignItems:'center',
+    [theme.breakpoints.down('sm')]:{
+      width:'25%',
+    },
     [theme.breakpoints.down('xs')]:{
-      width:'50%'
+      width:'60%'
     }
   },
   iconSearch:{
@@ -48,10 +54,22 @@ export default makeStyles((theme) => ({
   animation:`$myEffect 3000s ease-in-out`
   },
   title:{
-    animation:`$myEffect 1000ms ease-in-out`
+    cursor:'pointer',
+    animation:`$myEffect 1000ms ease-in-out`,
+    [theme.breakpoints.down('xs')]:{
+      fontSize:'medium'
+    }
   },
   contentPopOver:{
     boxSizing:'border-box',
-    padding:20
+   
+    '& p':{
+      boxSizing:'border-box',
+      padding:10,
+      cursor:'pointer',
+      '&:hover':{
+        background:'lightgray'
+      }
+    }
   }
 }))

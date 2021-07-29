@@ -23,10 +23,10 @@ function CommentPage() {
   
   return  (
     !loading ?<Grid className = {classes.wrap} item container spacing={1}>
-      <Grid item sm={7} xs={12} md={7}>
+      <Grid item sm={12} xs={12} md={7}>
         <PostItem post={currrentPost!} />
       </Grid>
-      <Grid item sm={5} md={5} xs={12}>
+      <Grid item sm={12} md={5} xs={12}>
         <Comments post = {currrentPost!} />
       </Grid>
     </Grid>

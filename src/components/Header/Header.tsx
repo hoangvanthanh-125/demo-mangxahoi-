@@ -1,18 +1,20 @@
-import { Avatar, Fab, Popover, Tooltip, Typography } from "@material-ui/core";
+import { Avatar, Popover, Tooltip, Typography } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
-import AddAlertIcon from "@material-ui/icons/AddAlert";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import HomeIcon from "@material-ui/icons/Home";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import React, { useEffect, useState } from "react";
+import firebase from "firebase";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { CustomLink } from "../../common/customLink";
+import { useAppSelector } from "../../redux/hook";
+import Notify from "../Notify/Notify";
 import Search from "../Search/Search";
 import useStyles from "./style";
-import firebase from "firebase";
-import { useHistory } from "react-router-dom";
-import { AsyncUser } from "../../common/AsyncUser";
-import HomeIcon from '@material-ui/icons/Home';
+
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [user, setUser] = useState<any>(null);
+  const user = useAppSelector((state) => state.user.currentUser);
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,15 +42,14 @@ function Header() {
         // An error happened.
       });
   };
-  useEffect(() => {
-    AsyncUser().then(() => {
-      setUser(firebase.auth().currentUser);
-    });
-  }, []);
   return !openSearch ? (
     <div className={classes.wrapHeader}>
       <div className={classes.headerLeft}>
-        <Typography className={classes.title} variant="h6">
+        <Typography
+          onClick={() => history.push("/")}
+          className={classes.title}
+          variant="h6"
+        >
           OUTSTAGROM
         </Typography>
       </div>
@@ -60,14 +61,20 @@ function Header() {
           onClick={() => setOpenSearch(true)}
           className={classes.iconSearch}
         />
-        <HomeIcon />
-        <TelegramIcon />
-        <AddAlertIcon />
-        <Tooltip title={user?.displayName} aria-label="add">
+        <CustomLink to="/" label={<HomeIcon />} activeOnlyWhenExact={true} />
+        <CustomLink
+          to="/l"
+          label={<TelegramIcon />}
+          activeOnlyWhenExact={true}
+        />
+
+        <Notify />
+        {/* <AddAlertIcon /> */}
+        <Tooltip title={user?.displayName!} aria-label="add">
           <Avatar
             aria-describedby={id}
             onClick={handleClick}
-            style={{ width: 25, height: 25 }}
+            style={{ width: 25, height: 25, cursor: "pointer" }}
             src={user?.photoURL}
           />
         </Tooltip>
@@ -87,6 +94,9 @@ function Header() {
           }}
         >
           <div className={classes.contentPopOver}>
+            <Typography onClick={() => history.push(`/user/${user?.uid!}`)}>
+              Trang cá nhân
+            </Typography>
             <Typography onClick={() => handleLogout()}>Logout</Typography>
           </div>
         </Popover>

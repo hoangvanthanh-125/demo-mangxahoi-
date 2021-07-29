@@ -28,13 +28,16 @@ export default makeStyles((theme) => ({
     alignItems:'center'
   },
   post:{
-  width:'70%',
+  flex:1,
   background:'rgb(231, 227, 227)',
   padding:'10px',
   borderRadius:'33px',
   cursor:'pointer',
   '&:hover':{
     opacity:0.7
+  },
+  [theme.breakpoints.down('xs')]:{
+    fontSize:12
   }
   },
   wrapPost:{
@@ -42,17 +45,18 @@ export default makeStyles((theme) => ({
     width:'100%',
     background:'white',
     // border:'1px solid lightgray',
-    margin:'20px 0',
+    margin:'25px 0',
+    marginBottom:0,
     borderRadius:'5px',
     display:'flex',
-    justifyContent:'space-around',
+    justifyContent:'flex-start',
     alignItems:'center',
     boxSizing:'border-box',
-    padding:'20px 0',
+    padding:'20px 10px',
     boxShadow:'0px 1px 2px lightgray',
     [theme.breakpoints.down('xs')]:{
       padding:10,
-      width:'95%'
+     borderRadius:'0'
     }
   },
   iconImage:{

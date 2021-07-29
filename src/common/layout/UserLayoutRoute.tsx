@@ -6,6 +6,7 @@ interface Item extends RouteProps {
 }
 function UserLayoutRoute({ component: MyComponent, ...rest }: Item) {
   const token = localStorage.getItem("token");
+  if (!MyComponent) return null;
   return (
     <Route
       {...rest}

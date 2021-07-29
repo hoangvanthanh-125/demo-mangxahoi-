@@ -11,7 +11,7 @@ import {
   addListPostActions,
   updatePostActions,
 } from "../../redux/actions/postAction";
-import { useAppDispatch } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { uiActions } from "../../redux/slice/uiSilce";
 import { listColor } from "./../../contstans/posts";
 import useStyles from "./Style";
@@ -28,16 +28,15 @@ function FormPost({ post }: Props) {
     }
     setOpen(false);
   };
-  const [user, setUser] = useState<any>(null);
+  // const [user, setUser] = useState<any>(null);
   const [color, setColor] = useState("white");
   const [image, setImage] = useState<any>(null);
   const [url, setUrl] = useState<any>("");
   const [progress, setProgress] = useState(0);
   const storage = firebase.storage();
   const [text, setText] = useState("");
+  const user = useAppSelector((state) => state.user.currentUser);
   const handleChange = async (e: any) => {
-    console.log("change");
-
     if (e.target.files[0]) {
       await setImage(e.target.files[0]);
     }
@@ -77,14 +76,6 @@ function FormPost({ post }: Props) {
       );
     }
   }, [image]);
-
-  useEffect(() => {
-    AsyncUser().then(() => {
-      setUser(firebase.auth().currentUser);
-      console.log(firebase.auth().currentUser);
-    });
-  }, []);
-
   const renderListColor = () => {
     let xhtml = listColor.map((color, index) => (
       <div
@@ -122,29 +113,26 @@ function FormPost({ post }: Props) {
         await dispatch(updatePostActions(newPost));
       }
     } else {
-      const currentUser: USER = {
-        displayName: user?.displayName,
-        email: user?.email,
-        photoURL: user?.photoURL,
-        uid: user?.uid,
-      };
       const newPost: POST = {
         postId: `post-${Math.random() * 67267637624}-${Math.random() * 145252}`,
-        createdAt: new Date(),
+        createdAt: Date.now() as number,
         title: text,
         color: color,
         urlImage: url,
-        userPost: currentUser,
+        userPost: user!,
         listLike: [] as USER[],
         listComment: [] as COMMENT[],
+        contentType: "",
+        uidUserPost:user?.uid!
       };
       await dispatch(addListPostActions(newPost));
     }
     setOpen(false);
     setImage(null);
-    setUrl(null);
+    setUrl("");
     setText("");
     dispatch(uiActions.closeModal());
+    setColor("white");
   };
   return (
     <Grid
@@ -155,6 +143,7 @@ function FormPost({ post }: Props) {
       sm={12}
     >
       <div className={classes.wrapPost}>
+        <Avatar className={classes.avatar}  src={user?.photoURL} />
         {!post && (
           <div className={classes.post} onClick={() => setOpen(true)}>
             {user?.displayName.split(" ")[0]} bạn đang nghĩ gì thế?

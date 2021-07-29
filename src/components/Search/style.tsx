@@ -12,11 +12,31 @@ export default makeStyles((theme) => ({
     }
   },
   input:{
-     animation:'$myEffect 0.3s ease-in',
-     minWidth:300
+    //  animation:'$myEffect 3s ease-in',
+     width:300,
+     [theme.breakpoints.down('xs')]:{
+       width:250
+     }
     //  border:'1px solid black'
   },
   form:{
-    width:'100%'
+    width:'100%',
+    display:'flex',
+    justifyContent:'center',
+  },
+  option: {
+    fontSize: 15,
+    '& > span': {
+      marginRight: 10,
+      fontSize: 18,
+    },
+  },
+  user:{
+    display:'flex',
+    justifyContent:'start',
+    alignItems:'center',
+    '& span':{
+      marginLeft:10
+    }
   }
 }))

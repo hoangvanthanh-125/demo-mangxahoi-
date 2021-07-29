@@ -3,6 +3,8 @@ import React from "react";
 import { RouteProps } from "react-router-dom";
 import Header from "../Header/Header";
 import useStyles from "./style";
+import { Animate }  from 'react-simple-animate';
+
 interface PropsDashBoard extends RouteProps {
   children: any;
 }

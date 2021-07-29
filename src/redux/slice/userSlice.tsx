@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-interface USER{
-  displayName:string,
-  email:string,
-  uid:string,
-  photoURL:string
-}
+import { USER } from "../../interfaces/userInterface";
+// interface USER{
+//   displayName:string,
+//   email:string,
+//   uid:string,
+//   photoURL:string,
+//   urlBia:string
+// }
 type TypeUSer ={
   currentUser:USER | null,
   user:null|string,
@@ -21,12 +23,11 @@ const userSlice = createSlice({
   reducers:{
    fetchCurrentUser :(state,action) => {
      state.currentUser = action.payload;
-     state.isAuth = true
+    //  state.isAuth = true
    },
-   setUser :(state,action) => {
-   state.user = action.payload;
-   
-  }
+   updateCurrentUser:(state,action) => {
+     state.currentUser = action.payload;
+   }
 }})
 export const {reducer:userReducer} = userSlice;
 export const {actions:userActions} = userSlice;

@@ -21,6 +21,7 @@ if (!firebase.apps.length) {
   firebase.app(); 
 }
 
+
 ReactDOM.render(
   <React.StrictMode>
   <Provider store={store}>

@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Symbol } from "typescript";
 interface UI{
   isOpen:boolean,
-  header:string,
-  bodyContent:any
+  header:string| any |Symbol ,
+  bodyContent:any|Symbol
 }
 const initialState = {
   isOpen:false,
