@@ -1,3 +1,4 @@
+import ChatPage from "../components/ChatPage/ChatPage";
 import CommentPage from "../components/CommentPage/CommentPage";
 import Home from "../components/Home/Home";
 import Personal from "../components/PersonalPage/Personal";
@@ -20,5 +21,11 @@ export const USER_ROUTER = [
     name: "personal/",
     exact: true,
     component: Personal,
+  },
+  {
+    path: "/chat",
+    name: "",
+    exact: false,
+    component: ChatPage,
   },
 ];

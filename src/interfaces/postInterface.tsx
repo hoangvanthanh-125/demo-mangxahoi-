@@ -1,7 +1,7 @@
 import { USER } from "./userInterface";
 export interface COMMENT {
   idComment?: string;
-  createdAt: Date;
+  createdAt: Date | number;
   id?: string;
   contentComment: string;
   userComment: USER;

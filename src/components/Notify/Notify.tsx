@@ -13,6 +13,7 @@ import { AsyncUser } from "../../common/AsyncUser";
 import firebase from "firebase";
 import { useHistory } from "react-router-dom";
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { FormatTime } from "../../common/formatTime";
 function Notify() {
   var db = firebase.firestore();
   const classes = useStyles();
@@ -87,6 +88,7 @@ function Notify() {
               {item.nameUserMadeNotify}
             </span>{" "}
             {item.contentNotify}
+            <div className={classes.time}>{FormatTime(item.created)}</div>
           </div>
         </div>
       ));

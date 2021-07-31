@@ -2,10 +2,12 @@ import { Avatar, IconButton, Popover, Typography } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { AsyncUser } from "../../common/AsyncUser";
+import { FormatTime } from "../../common/formatTime";
 import { COMMENT, POST } from "../../interfaces/postInterface";
 import { updatePostActions } from "../../redux/actions/postAction";
-import { useAppDispatch } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { uiActions } from "../../redux/slice/uiSilce";
 import useStyles from "./style";
 interface Props {
@@ -22,13 +24,8 @@ function CommentItem({ item, post }: Props) {
   const [contentCmt, setContentCmt] = useState(item.contentComment);
 
   const classes = useStyles();
-  const [user, setUser] = useState<any>(null);
-  useEffect(() => {
-    AsyncUser().then(() => {
-      const currentUser = firebase.auth().currentUser;
-      setUser(currentUser);
-    });
-  }, []);
+  const user = useAppSelector((state) => state.user.currentUser);
+  const history = useHistory();
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -66,7 +63,7 @@ function CommentItem({ item, post }: Props) {
   };
   const deleteCmt = async () => {
     dispatch(uiActions.openModal());
-    dispatch(uiActions.fetchHeaderModal(''));
+    dispatch(uiActions.fetchHeaderModal(""));
     dispatch(
       uiActions.fetchBodyModal(
         <div className={classes.wrapLoadDelete}>
@@ -97,7 +94,7 @@ function CommentItem({ item, post }: Props) {
   };
   return (
     <div className={classes.wrap}>
-      <Avatar src={item.userComment.photoURL} />
+      <Avatar style={{cursor:'pointer'}} onClick={() => history.push(`/user/${item.userComment.uid}`)} src={item.userComment.photoURL} />
       <div className={classes.wrapcontent}>
         {user?.uid === item.userComment.uid && (
           <IconButton
@@ -146,7 +143,7 @@ function CommentItem({ item, post }: Props) {
             <button onClick={() => updateComment()}>Xong</button>:
           </div>
         )}
-        <div className={classes.time}>{item.createdAt.toString()}</div>
+        <div className={classes.time}>{FormatTime(item.createdAt as number)}</div>
       </div>
     </div>
   );

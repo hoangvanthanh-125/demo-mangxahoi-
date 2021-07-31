@@ -7,7 +7,6 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
 import { POST } from "../../interfaces/postInterface";
 import { USER } from "../../interfaces/userInterface";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
@@ -16,12 +15,15 @@ import PostItem from "../PostItem/PostItem";
 import useStyles from "./style";
 import Icon from "@material-ui/core/Icon";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import firebase from 'firebase'
 
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { uiActions } from "../../redux/slice/uiSilce";
 import FormChangeImage from "../FormChangeImage/FormChangeImage";
-import Posts from "../Posts/Posts";
 import Loading from "../../common/loading/loading";
+import { useParams } from "react-router-dom";
+import { ROOM } from "../../interfaces/chatInterface";
+import { getId } from "../FormComment/FormComment";
 function Personal() {
   const { id } = useParams<{ id: string }>();
   const classes = useStyles();
@@ -29,14 +31,13 @@ function Personal() {
   const { currentUser } = useAppSelector((state) => state.user);
   const { listPost } = useAppSelector((state) => state.posts);
   const [listPostUser, setListPost] = useState<POST[]>([]);
-  const [idPostBia, setIdPostBia] = useState("");
-  const [idPostAvt, setIdPostAvt] = useState("");
   const [loading, setLoading] = useState(true);
-  // console.log(currentUser);
   const dispatch = useAppDispatch();
-  const history = useHistory();
   useEffect(() => {
     window.scrollTo(0, 0);
+  },[])
+  useEffect(() => {
+  
     const fetch = async () => {
       Promise.all([
         axios.get(
@@ -98,6 +99,16 @@ function Personal() {
     //   history.push(`/comment/${idPostBia}`)
     // }
   };
+ const  handClickAddRoomChat = () => {
+   firebase.firestore().collection('rooms').add({
+     idRoom:getId(),
+     createdAt:Date.now(),
+     members:[user.uid,currentUser?.uid],
+
+   } as ROOM)
+
+ }
+
   return !loading ? (
     <Grid className={classes.container} container>
       <Grid sm={9} xs={12} md={9} className={classes.wrapInfo}>
@@ -138,6 +149,9 @@ function Personal() {
           )}
         </div>
         <div className={classes.nameUser}>{user?.displayName}</div>
+     <Button variant='contained' onClick ={() => handClickAddRoomChat()}>
+       Nhắn tin
+     </Button>
       </Grid>
 
       <Grid

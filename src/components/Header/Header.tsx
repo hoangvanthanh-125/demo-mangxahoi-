@@ -63,7 +63,7 @@ function Header() {
         />
         <CustomLink to="/" label={<HomeIcon />} activeOnlyWhenExact={true} />
         <CustomLink
-          to="/l"
+          to="/chat"
           label={<TelegramIcon />}
           activeOnlyWhenExact={true}
         />

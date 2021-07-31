@@ -310,7 +310,7 @@ import firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { AsyncUser } from "../../common/AsyncUser";
-import { POST } from "../../interfaces/postInterface";
+import { NOTIFY, POST } from "../../interfaces/postInterface";
 import { USER } from "../../interfaces/userInterface";
 import ClearIcon from "@material-ui/icons/Clear";
 
@@ -324,6 +324,7 @@ import FormPost from "../FormPost/FormPost";
 import useStyles2 from "./../CommentItem/style";
 import useStyles from "./style";
 import { FormatTime } from "../../common/formatTime";
+import { getId } from "../FormComment/FormComment";
 interface PropsPostItem {
   post: POST;
 }
@@ -371,34 +372,96 @@ function PostItem({ post }: PropsPostItem) {
   const handleClickLike = async () => {
     await setLike((prev) => !prev);
   };
-  useEffect(() => {
-    if (isLike && user) {
-      const index = listLike.findIndex((item) => item.uid === user.uid);
-      if (index < 0) {
-        const newListLike = listLike.concat(currentUser!);
-        dispatch(
-          updatePostActions({
-            ...post,
-            listLike: [...newListLike],
-          })
-        );
-      }
-    } else if (!isLike && user) {
-      const index = listLike.findIndex((item) => item.uid === user.uid);
-      if (index >= 0) {
-        const newListLike = [
-          ...listLike.slice(0, index),
-          ...listLike.slice(index + 1),
-        ];
-        dispatch(
-          updatePostActions({
-            ...post,
-            listLike: [...newListLike],
-          })
-        );
-      }
-    }
-  }, [isLike]);
+  // useEffect(() => {
+  //   if (isLike && user) {
+  //     const index = listLike.findIndex((item) => item.uid === user.uid);
+  //     if (index < 0) {
+  //       const newListLike = listLike.concat(currentUser!);
+  //       dispatch(
+  //         updatePostActions({
+  //           ...post,
+  //           listLike: [...newListLike],
+  //         })
+  //       );
+  //     }
+  //   } else if (!isLike && user) {
+  //     const index = listLike.findIndex((item) => item.uid === user.uid);
+  //     if (index >= 0) {
+  //       const newListLike = [
+  //         ...listLike.slice(0, index),
+  //         ...listLike.slice(index + 1),
+  //       ];
+  //       dispatch(
+  //         updatePostActions({
+  //           ...post,
+  //           listLike: [...newListLike],
+  //         })
+  //       );
+      
+    
+  // }, [isLike]);
+
+
+
+
+ 
+      useEffect(() => {
+    
+        if (isLike && user) {
+          console.log(user);
+    
+         const likePost = async() => {
+          const index = listLike.findIndex((item) => item.uid === user.uid);
+          if (index < 0) {
+            const newListLike = listLike.concat(user);
+           await  dispatch(
+              updatePostActions({
+                ...post,
+                listLike: [...newListLike],
+              })
+            );
+            if(post.userPost.uid !== user.uid){
+              firebase.firestore().collection('notify').add({
+                idPost:post.id,
+                uid:post.userPost.uid,
+                contentNotify:`đã thả tym viết của bạn`,
+                created:Date.now() as number,
+                idNotify:getId(),
+                photoURL:currentUser?.photoURL,
+                nameUserMadeNotify:currentUser?.displayName,
+                watched:false,
+                clicked:false
+    
+              } as NOTIFY)
+            }
+    
+          }
+         }
+         likePost()
+        } else if (!isLike && user) {
+          console.log(user);
+    
+          const index = listLike.findIndex((item) => item.uid === user.uid);
+          if (index >= 0) {
+            const newListLike = [
+              ...listLike.slice(0, index),
+              ...listLike.slice(index + 1),
+            ];
+            dispatch(
+              updatePostActions({
+                ...post,
+                listLike: [...newListLike],
+              })
+            );
+          }
+        }
+      }, [isLike]);
+    
+
+
+
+
+
 
   useEffect(() => {
     AsyncUser().then(() => {

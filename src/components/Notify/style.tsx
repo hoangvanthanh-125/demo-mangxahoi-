@@ -63,4 +63,9 @@ export default makeStyles((theme) => ({
     padding: "10px",
     fontWeight: 500,
   },
+  time:{
+    color:'gray',
+    fontSize:12,
+    fontWeight:'bold'
+  }
 }));

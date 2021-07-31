@@ -36,6 +36,7 @@ image:{
   width:100,
   height:100,
   marginLeft:10,
+  marginTop:10,
   objectFit:'cover',
   borderRadius:'5px',
   boxShadow:'2px 3px 3px lightgray',

@@ -35,8 +35,10 @@ export default makeStyles(() => ({
   },
   time: {
     marginTop: 5,
-    fontSize: "small",
+    fontSize: "12px",
     color: "gray",
+    fontWeight:'bold',
+
   },
   moreIcon: {
     position: "absolute",
@@ -44,14 +46,18 @@ export default makeStyles(() => ({
     top: 2,
   },
   popOver: {
-    padding: 10,
+  
   },
   popOverItem: {
+    boxSizing: 'border-box',
     cursor:'pointer',
     
-    padding: 10,
+    padding: '10px 30px',
     '&:first-child':{
-      borderBottom:'1px solid lightgray',
+      
+    },
+    '&:hover':{
+      background:'lightgray'
     }
   },
   wrapUpdate:{

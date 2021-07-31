@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   home:{
     position:'relative',
     boxSizing:'border-box',
-    padding:'0 60px',
+    padding:'0 52px',
     [theme.breakpoints.down('sm')]:{
       padding:'0px 20px'
     },
@@ -25,7 +25,7 @@ export default makeStyles((theme) => ({
   },
   listUser:{
     position:'fixed',
-    top:65,
+    top:78,
   }
 
 }))

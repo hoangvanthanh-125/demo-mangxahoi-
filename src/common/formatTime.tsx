@@ -11,7 +11,7 @@ export const FormatTime =(time:number) => {
   if(sogiay < 86400){
     return `${Math.trunc(sogiay/3600)} giờ`
   }
-  if(sogiay < 86400){
+  if(sogiay >= 86400){
     return `${Math.trunc(sogiay/86400)} ngày`
   }
 
