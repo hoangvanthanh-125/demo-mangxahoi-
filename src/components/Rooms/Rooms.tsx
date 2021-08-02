@@ -21,11 +21,12 @@ function Rooms({ listRoom }: Props) {
       xhtml = listRoom.map((room: ROOM, index: number) => {
         return (
           <div
+            key={index}
             style={{
               background: `${obj?.idRoom === room?.idRoom ? "lightgray" : ""}`,
             }}
           >
-            <RoomItem key={index} room={room} />
+            <RoomItem room={room} />
           </div>
         );
       });

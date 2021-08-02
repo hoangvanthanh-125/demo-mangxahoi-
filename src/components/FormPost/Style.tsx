@@ -41,6 +41,7 @@ export default makeStyles((theme) => ({
   }
   },
   wrapPost:{
+    border:'1px solid lightgray',
   
     width:'100%',
     background:'white',
@@ -53,7 +54,7 @@ export default makeStyles((theme) => ({
     alignItems:'center',
     boxSizing:'border-box',
     padding:'20px 10px',
-    boxShadow:'0px 1px 2px lightgray',
+    // boxShadow:'0px 1px 2px lightgray',
     [theme.breakpoints.down('xs')]:{
       padding:10,
      borderRadius:'0'

@@ -3,14 +3,14 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   card: {
     wordWrap: "break-word",
+    boxSizing:'border-box',
     background: "white",
     padding: 0,
     width: "100%",
-    //  border:'.5px solid lightgray',
+     border:'1px solid lightgray',
     //  boxShadow:'1px 1px 0px lightgray',
     borderRadius: "5px",
     [theme.breakpoints.down("xs")]: {
-      border: "none",
       borderRadius: 0,
     },
     marginTop:15

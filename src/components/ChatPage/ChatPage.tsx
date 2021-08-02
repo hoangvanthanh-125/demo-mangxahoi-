@@ -77,14 +77,23 @@ function ChatPage() {
         );
         setUserReceive(result.data[0]);
       });
-  }, [idRoom]);
+  }, [idRoom, search]);
   return (
     <Grid className={classes.conatainer} container>
-      <Grid className={classes.wrapListRoom}  item sm={4} md={4} xs={12}>
-        <Rooms  listRoom={listRoom} />
+     <Grid className={classes.wrap} item sm={12} xs={12} md={12}>
+     <Grid className={classes.wrapListRoom} item sm={4} md={4} xs={12}>
+        <Rooms listRoom={listRoom} />
       </Grid>
       <Grid className={classes.wrapBoxChat} item sm={8} md={6} xs={12}>
-        <BoxChat userReceive ={ userReceive} idRoom={idRoom} listMessage={listMessage} />
+        <BoxChat
+          userReceive={userReceive}
+          idRoom={idRoom}
+          listMessage={listMessage}
+        />
+      </Grid>
+     </Grid>
+      <Grid className={classes.noAccess} item xs={12}>
+        Không hỗ trợ trên mobile,vui lòng truy cập bằng laptop :(
       </Grid>
     </Grid>
   );

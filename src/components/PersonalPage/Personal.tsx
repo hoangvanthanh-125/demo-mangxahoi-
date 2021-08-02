@@ -15,13 +15,13 @@ import PostItem from "../PostItem/PostItem";
 import useStyles from "./style";
 import Icon from "@material-ui/core/Icon";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import firebase from 'firebase'
+import firebase from "firebase";
 
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import { uiActions } from "../../redux/slice/uiSilce";
 import FormChangeImage from "../FormChangeImage/FormChangeImage";
 import Loading from "../../common/loading/loading";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { ROOM } from "../../interfaces/chatInterface";
 import { getId } from "../FormComment/FormComment";
 function Personal() {
@@ -33,11 +33,11 @@ function Personal() {
   const [listPostUser, setListPost] = useState<POST[]>([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const history = useHistory();
   useEffect(() => {
     window.scrollTo(0, 0);
-  },[])
+  }, []);
   useEffect(() => {
-  
     const fetch = async () => {
       Promise.all([
         axios.get(
@@ -49,12 +49,14 @@ function Personal() {
       ])
         .then((res) => {
           setUser(res[0].data[0]);
-          setListPost(res[1].data.sort((post1:POST,post2:POST) => {
-            if(post1.createdAt > post2.createdAt){
-              return -1;
-            }
-            return 1;
-          }));
+          setListPost(
+            res[1].data.sort((post1: POST, post2: POST) => {
+              if (post1.createdAt > post2.createdAt) {
+                return -1;
+              }
+              return 1;
+            })
+          );
         })
         .then(() => {
           setLoading(false);
@@ -99,19 +101,47 @@ function Personal() {
     //   history.push(`/comment/${idPostBia}`)
     // }
   };
- const  handClickAddRoomChat = () => {
-   firebase.firestore().collection('rooms').add({
-     idRoom:getId(),
-     createdAt:Date.now(),
-     members:[user.uid,currentUser?.uid],
-
-   } as ROOM)
-
- }
+  const handClickAddRoomChat = async () => {
+    var p = 0;
+    const room = await firebase
+      .firestore()
+      .collection("rooms")
+      .where("members", "array-contains", user?.uid)
+      .get();
+    room.docs.forEach((doc) => {
+      if (doc.data().members.includes(currentUser?.uid!)) {
+        p = 1;
+        history.push({
+          pathname: "/chat",
+          search: `?idRoom=${doc.data()?.idRoom}`,
+        });
+        return;
+      }
+    });
+    if (p === 0) {
+      firebase
+        .firestore()
+        .collection("rooms")
+        .add({
+          idRoom: getId(),
+          createdAt: Date.now(),
+          members: [user.uid, currentUser?.uid],
+        } as ROOM)
+        .then((res) => {
+          // history.push(`/chat/${room.}`);
+          res.get().then((docs) => {
+            history.push({
+              pathname: "/chat",
+              search: `?idRoom=${docs?.data()?.idRoom}`,
+            });
+          });
+        });
+    }
+  };
 
   return !loading ? (
     <Grid className={classes.container} container>
-      <Grid sm={9} xs={12} md={9} className={classes.wrapInfo}>
+      <Grid item sm={9} xs={12} md={9} className={classes.wrapInfo}>
         <div className={classes.wrapAnhbia}>
           <img
             onClick={() => handleClickAnhBia()}
@@ -149,9 +179,11 @@ function Personal() {
           )}
         </div>
         <div className={classes.nameUser}>{user?.displayName}</div>
-     <Button variant='contained' onClick ={() => handClickAddRoomChat()}>
-       Nhắn tin
-     </Button>
+        {currentUser?.uid !== user?.uid && (
+          <Button className={classes.buttonInbox} variant="contained" onClick={() => handClickAddRoomChat()}>
+            Nhắn tin
+          </Button>
+        )}
       </Grid>
 
       <Grid

@@ -1,9 +1,9 @@
 import { Avatar } from "@material-ui/core";
 import React, { useRef } from "react";
 import { useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { MESSAGE } from "../../interfaces/chatInterface";
 import { USER } from "../../interfaces/userInterface";
-import { useAppSelector } from "../../redux/hook";
 import FormChat from "../formChat/FormChat";
 import MessageItem from "../messageItem/MessageItem";
 import useStyle from './style'
@@ -16,7 +16,7 @@ interface Props {
 function BoxChat({ listMessage, idRoom,userReceive }: Props) {
   const classes = useStyle()
   const dummy = useRef(null);
-
+  const { search } = useLocation();
   const renderMessItem = () => {
     let xhtml = null;
     if (listMessage.length > 0) {
@@ -26,19 +26,20 @@ function BoxChat({ listMessage, idRoom,userReceive }: Props) {
     }
     return xhtml;
   };
-  useEffect(() => {}, [idRoom]);
   return (
-    <div className={classes.boxChat}>
-     <div className={classes.header}>
-     <Avatar src = {userReceive?.photoURL} />
-     <span>{userReceive?.displayName}</span>
-     </div>
-     <div className={classes.body}>
-     {renderMessItem()}
-     <span ref={dummy}></span>
-     </div>
-      <FormChat dummy={dummy} idRoom={idRoom} />
-    </div>
+   search? <div className={classes.boxChat}>
+   <div className={classes.header}>
+   <Avatar src = {userReceive?.photoURL} />
+   <span>{userReceive?.displayName}</span>
+   </div>
+   <div className={classes.body}>
+   {renderMessItem()}
+   <span ref={dummy}></span>
+   </div>
+    <FormChat dummy={dummy} idRoom={idRoom} />
+  </div>:<div className={classes.noChat}>
+    Gửi tin nhắn cho bạn bè
+  </div>
   );
 }
 

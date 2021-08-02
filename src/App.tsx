@@ -50,7 +50,6 @@ function App() {
         return <UserLayoutRoute key={index} component={item.component} path={item.path} exact={item.exact} />;
       });
     }
-    console.log(xhtml);
     
     return xhtml;
   };

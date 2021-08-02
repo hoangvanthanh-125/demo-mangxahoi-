@@ -139,8 +139,10 @@ export default makeStyles((theme) => ({
     marginTop:100,
     fontWeight:'bold',
     fontSize:25
-    // position:'absolute',
-    // zIndex:10000,
-    // bottom:90
+  },
+  buttonInbox:{
+    background:'transparent',
+    marginTop:10,
+
   }
 }))

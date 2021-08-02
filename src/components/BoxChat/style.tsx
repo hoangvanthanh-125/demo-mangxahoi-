@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   boxChat: {
     background: 'white',
-    paddingBottom: 15
+    paddingBottom: 15,
+    border:'1px solid lightgray'
   },
   header: {
     display: 'flex',
@@ -32,5 +33,15 @@ export default makeStyles((theme) => ({
       backgroundColor: 'rgba(0,0,0,.1)',
       borderRadius: 12
     }
+  },
+  noChat:{
+    height:463,
+    background:'white ',
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    fontSize:'x-large',
+    fontWeight:'bold',
+    border:'1px solid lightgray'
   }
 }))
