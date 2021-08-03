@@ -1,23 +1,29 @@
+import qs from "query-string";
 import React from "react";
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { ROOM } from "../../interfaces/chatInterface";
+import { USER } from "../../interfaces/userInterface";
 import { useAppSelector } from "../../redux/hook";
 import RoomItem from "../RoomItem/RoomItem";
 import useStyle from "./style";
-import qs from "query-string";
-import { useLocation } from "react-router-dom";
-import { USER } from "../../interfaces/userInterface";
 interface Props {
-  listRoom: NEW_ROOM[],
-  handleClickSetCurrentRoom:(room:NEW_ROOM) => void
+  listRoom: NEW_ROOM[];
+  handleClickSetCurrentRoom: (room: NEW_ROOM) => void;
+  setOpenModal: () => void;
+  closeModal: () => void;
 }
-interface NEW_ROOM extends ROOM{
-  userReceive:USER
+interface NEW_ROOM extends ROOM {
+  userReceive: USER;
 }
 
-function Rooms({ listRoom,handleClickSetCurrentRoom }: Props) {
+function Rooms({
+  listRoom,
+  handleClickSetCurrentRoom,
+  setOpenModal,
+  closeModal,
+}: Props) {
   console.log(listRoom.length);
-  
+
   const classes = useStyle();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const { search } = useLocation();
@@ -28,7 +34,7 @@ function Rooms({ listRoom,handleClickSetCurrentRoom }: Props) {
       xhtml = listRoom.map((room: NEW_ROOM, index: number) => {
         return (
           <div
-           onClick ={() =>  handleClickSetRoom(room)}
+            onClick={() => handleClickSetRoom(room)}
             key={index}
             style={{
               background: `${obj?.idRoom === room?.idRoom ? "lightgray" : ""}`,
@@ -41,12 +47,12 @@ function Rooms({ listRoom,handleClickSetCurrentRoom }: Props) {
     }
     return xhtml;
   };
-  const handleClickSetRoom = (room:NEW_ROOM) => {
-    if(handleClickSetCurrentRoom){
+  const handleClickSetRoom = (room: NEW_ROOM) => {
+    if (handleClickSetCurrentRoom) {
       handleClickSetCurrentRoom(room);
+      setOpenModal();
     }
-
-  }
+  };
   return (
     <div className={classes.wrap}>
       <div className={classes.header}>{currentUser?.displayName}</div>

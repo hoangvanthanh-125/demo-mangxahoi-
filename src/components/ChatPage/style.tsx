@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
     justifyContent:'center',
     alignItems:'start',
     [theme.breakpoints.down('xs')]:{
-      display:'none'
+      // display:'none'
     }
   },
   noAccess:{
@@ -37,7 +37,19 @@ export default makeStyles((theme) => ({
 
   },
   wrapBoxChat:{
-
+ [theme.breakpoints.down('xs')]:{
+   display:'none'
+ }
+  },
+  modalContainer:{
+     [theme.breakpoints.up('sm')]:{
+       display:'none'
+     }
+  },
+  modalChat:{
+    width:'100%',
+    height:'100vh',
+    background:'red'
   }
 
 }))

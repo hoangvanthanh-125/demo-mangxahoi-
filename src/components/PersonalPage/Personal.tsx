@@ -167,7 +167,7 @@ function Personal() {
           )}
         </div>
         <div className={classes.wrapAvt}>
-          <Avatar className={classes.avatar} src={user.photoURL} />
+          <Avatar className={classes.avatar} src={user?.photoURL} />
           {currentUser?.uid === id && (
             <IconButton
               onClick={() => changeImg("avt")}

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   wrap:{
     border:'1px solid lightgray',
     background:'white',
@@ -15,8 +15,10 @@ export default makeStyles(() => ({
     fontWeight:'bold',
   },
   body:{
+    width:'100%',
     height:383,
     overflowY:'auto',
+    boxSizing:'border-box',
     '&::-webkit-scrollbar': {
       width: '0.5em',
     },
@@ -28,6 +30,10 @@ export default makeStyles(() => ({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(0,0,0,.1)',
       borderRadius: 12
+    },
+    [theme.breakpoints.down('xs')]:{
+      height:'calc(100vh - 165px)',
+      
     }
   }
 }))

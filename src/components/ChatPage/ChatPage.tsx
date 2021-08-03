@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Modal } from "@material-ui/core";
 import React, { useState } from "react";
 import Rooms from "../Rooms/Rooms";
 import useStyles from "./style";
@@ -10,8 +10,6 @@ import BoxChat from "../BoxChat/BoxChat";
 import { useLocation } from "react-router-dom";
 import qs from "query-string";
 import { USER } from "../../interfaces/userInterface";
-import axios from "axios";
-
 function ChatPage() {
   const classes = useStyles();
   const { search } = useLocation();
@@ -19,12 +17,14 @@ function ChatPage() {
   const [listRoom, setListRoom] = useState<NEW_ROOM[]>([]);
   const [listMessage, setListMessage] = useState<MESSAGE[]>([]);
   const [idRoom, setIdRoom] = useState("");
-  const [currentRoom,setCurrentRoom] = useState<NEW_ROOM>({} as NEW_ROOM);
-  var list: NEW_ROOM[] = [];
-  const { listUser } = useAppSelector(state => state.user)
+  const [currentRoom, setCurrentRoom] = useState<NEW_ROOM>({} as NEW_ROOM);
+  const [open,setOpen] = useState(false);
 
-  interface NEW_ROOM extends ROOM{
-    userReceive:USER
+  var list: NEW_ROOM[] = [];
+  const { listUser } = useAppSelector((state) => state.user);
+
+  interface NEW_ROOM extends ROOM {
+    userReceive: USER;
   }
 
   useEffect(() => {
@@ -34,20 +34,20 @@ function ChatPage() {
         .collection("rooms")
         .where("members", "array-contains", currentUser.uid)
         .get()
-        .then( async (res) => {
+        .then(async (res) => {
           await res.docs.forEach(async (doc) => {
-            const {members} = doc.data();
-            
+            const { members } = doc.data();
+
             const uidReceive = members.filter(
               (mem: string) => mem !== currentUser?.uid!
             )[0];
-            const userReceive = listUser.find((user:USER) => user?.uid === uidReceive);
-            list.push({ ...doc.data(), id: doc.id ,userReceive} as NEW_ROOM);
-            
+            const userReceive = listUser.find(
+              (user: USER) => user?.uid === uidReceive
+            );
+            list.push({ ...doc.data(), id: doc.id, userReceive } as NEW_ROOM);
           });
-          setListRoom(list)
-        })
-       
+          setListRoom(list);
+        });
     }
   }, [currentUser]);
   useEffect(() => {
@@ -74,27 +74,51 @@ function ChatPage() {
         });
     }
   }, [search]);
-  
-  const handleClickSetCurrentRoom = (room:NEW_ROOM) =>{
+
+  const handleClickSetCurrentRoom = (room: NEW_ROOM) => {
     setCurrentRoom(room);
-  }
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Grid className={classes.conatainer} container>
-     <Grid className={classes.wrap} item sm={12} xs={12} md={12}>
-     <Grid className={classes.wrapListRoom} item sm={4} md={4} xs={12}>
-        <Rooms handleClickSetCurrentRoom={handleClickSetCurrentRoom} listRoom={listRoom} />
+      <Grid className={classes.wrap} container item sm={12} xs={12} md={12}>
+        <Grid className={classes.wrapListRoom} item sm={4} md={4} xs={12}>
+          <Rooms
+           setOpenModal={() => setOpen(true)}
+            handleClickSetCurrentRoom={handleClickSetCurrentRoom}
+            listRoom={listRoom}
+            closeModal={handleClose}
+          />
+        </Grid>
+        <Grid className={classes.wrapBoxChat} item sm={8} md={6} xs={12}>
+          <BoxChat
+            idRoom={idRoom}
+            listMessage={listMessage}
+            currentRoom={currentRoom}
+            closeModal={handleClose}
+          />
+        </Grid>
       </Grid>
-      <Grid className={classes.wrapBoxChat} item sm={8} md={6} xs={12}>
+     
+      <Modal
+      className={classes.modalContainer}
+        open={open}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        onClose={handleClose}
+      >
+        <div className={classes.modalChat}>
         <BoxChat
-          idRoom={idRoom}
-          listMessage={listMessage}
-          currentRoom={currentRoom}
-        />
-      </Grid>
-     </Grid>
-      <Grid className={classes.noAccess} item xs={12}>
-        Không hỗ trợ trên mobile,vui lòng truy cập bằng laptop :(
-      </Grid>
+            idRoom={idRoom}
+            listMessage={listMessage}
+            currentRoom={currentRoom}
+            closeModal={handleClose}
+           
+          />
+        </div>
+  </Modal>
     </Grid>
   );
 }

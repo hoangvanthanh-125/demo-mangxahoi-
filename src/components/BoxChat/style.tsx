@@ -7,6 +7,7 @@ export default makeStyles((theme) => ({
     border:'1px solid lightgray'
   },
   header: {
+    position:'relative',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -16,6 +17,15 @@ export default makeStyles((theme) => ({
       fontWeight: 'bold',
     },
     borderBottom: '1px solid lightgray'
+  },
+  iconBack:{
+  position:'absolute',
+  right:20,
+  top:'35%',
+  [theme.breakpoints.up('sm')]:{
+    display:'none',
+  }
+
   },
   body: {
     height: 300,
@@ -32,7 +42,11 @@ export default makeStyles((theme) => ({
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(0,0,0,.1)',
       borderRadius: 12
+    },
+    [theme.breakpoints.down('xs')]:{
+      height:'calc(100vh - 165px)'
     }
+
   },
   noChat:{
     height:463,
