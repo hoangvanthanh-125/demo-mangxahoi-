@@ -16,10 +16,16 @@ function ChatPage() {
   const classes = useStyles();
   const { search } = useLocation();
   const currentUser = useAppSelector((state) => state.user.currentUser!);
-  const [listRoom, setListRoom] = useState<ROOM[]>([]);
+  const [listRoom, setListRoom] = useState<NEW_ROOM[]>([]);
   const [listMessage, setListMessage] = useState<MESSAGE[]>([]);
   const [idRoom, setIdRoom] = useState("");
-  const [userReceive, setUserReceive] = useState<USER>({} as USER);
+  const [currentRoom,setCurrentRoom] = useState<NEW_ROOM>({} as NEW_ROOM);
+  var list: NEW_ROOM[] = [];
+  const { listUser } = useAppSelector(state => state.user)
+
+  interface NEW_ROOM extends ROOM{
+    userReceive:USER
+  }
 
   useEffect(() => {
     if (currentUser) {
@@ -28,13 +34,20 @@ function ChatPage() {
         .collection("rooms")
         .where("members", "array-contains", currentUser.uid)
         .get()
-        .then((res) => {
-          const list: ROOM[] = [];
-          res.docs.forEach((doc) => {
-            list.push({ ...doc.data(), id: doc.id } as ROOM);
+        .then( async (res) => {
+          await res.docs.forEach(async (doc) => {
+            const {members} = doc.data();
+            
+            const uidReceive = members.filter(
+              (mem: string) => mem !== currentUser?.uid!
+            )[0];
+            const userReceive = listUser.find((user:USER) => user?.uid === uidReceive);
+            list.push({ ...doc.data(), id: doc.id ,userReceive} as NEW_ROOM);
+            
           });
-          setListRoom(list);
-        });
+          setListRoom(list)
+        })
+       
     }
   }, [currentUser]);
   useEffect(() => {
@@ -61,34 +74,21 @@ function ChatPage() {
         });
     }
   }, [search]);
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection("rooms")
-      .where("idRoom", "==", idRoom)
-      .get()
-      .then(async (res) => {
-        const room = res.docs[0]?.data();
-        const uidReceive = room?.members.filter(
-          (mem: string) => mem !== currentUser?.uid!
-        )[0];
-        const result = await axios.get(
-          `https://601014b66c21e1001704fe27.mockapi.io/api/users/?uid=${uidReceive}`
-        );
-        setUserReceive(result.data[0]);
-      });
-  }, [idRoom, search]);
+  
+  const handleClickSetCurrentRoom = (room:NEW_ROOM) =>{
+    setCurrentRoom(room);
+  }
   return (
     <Grid className={classes.conatainer} container>
      <Grid className={classes.wrap} item sm={12} xs={12} md={12}>
      <Grid className={classes.wrapListRoom} item sm={4} md={4} xs={12}>
-        <Rooms listRoom={listRoom} />
+        <Rooms handleClickSetCurrentRoom={handleClickSetCurrentRoom} listRoom={listRoom} />
       </Grid>
       <Grid className={classes.wrapBoxChat} item sm={8} md={6} xs={12}>
         <BoxChat
-          userReceive={userReceive}
           idRoom={idRoom}
           listMessage={listMessage}
+          currentRoom={currentRoom}
         />
       </Grid>
      </Grid>
@@ -100,3 +100,4 @@ function ChatPage() {
 }
 
 export default ChatPage;
+// export default  [currentRoom,setCurrenRoom]

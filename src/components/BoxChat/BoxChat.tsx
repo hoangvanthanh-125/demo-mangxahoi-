@@ -1,19 +1,21 @@
 import { Avatar } from "@material-ui/core";
 import React, { useRef } from "react";
-import { useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { MESSAGE } from "../../interfaces/chatInterface";
+import { useLocation } from "react-router-dom";
+import { MESSAGE, ROOM } from "../../interfaces/chatInterface";
 import { USER } from "../../interfaces/userInterface";
 import FormChat from "../formChat/FormChat";
 import MessageItem from "../messageItem/MessageItem";
-import useStyle from './style'
+import useStyle from './style';
 interface Props {
   listMessage: MESSAGE[];
   idRoom: string,
-  userReceive :USER
+  currentRoom:NEW_ROOM
+}
+interface NEW_ROOM extends ROOM{
+  userReceive:USER
 }
 
-function BoxChat({ listMessage, idRoom,userReceive }: Props) {
+function BoxChat({ listMessage, idRoom ,currentRoom}: Props) {
   const classes = useStyle()
   const dummy = useRef(null);
   const { search } = useLocation();
@@ -21,16 +23,17 @@ function BoxChat({ listMessage, idRoom,userReceive }: Props) {
     let xhtml = null;
     if (listMessage.length > 0) {
       xhtml = listMessage.map((message: MESSAGE) => (
-        <MessageItem userReceive={userReceive} key={message.idMessage} message={message} />
+        <MessageItem userReceive={currentRoom?.userReceive} key={message.idMessage} message={message} />
       ));
     }
     return xhtml;
   };
+  
   return (
    search? <div className={classes.boxChat}>
    <div className={classes.header}>
-   <Avatar src = {userReceive?.photoURL} />
-   <span>{userReceive?.displayName}</span>
+   <Avatar src = {currentRoom?.userReceive?.photoURL} />
+   <span>{currentRoom?.userReceive?.displayName}</span>
    </div>
    <div className={classes.body}>
    {renderMessItem()}

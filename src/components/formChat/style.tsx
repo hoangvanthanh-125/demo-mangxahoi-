@@ -24,5 +24,10 @@ export default makeStyles((theme) => ({
     border:'none',
     outline:'none'
 
+  },
+  img:{
+    width:40,
+    height:40,
+    objectFit:'cover'
   }
 }))

@@ -10,7 +10,8 @@ import { USER } from "../../interfaces/userInterface";
 type TypeUSer ={
   currentUser:USER | null,
   user:null|string,
-  isAuth:boolean
+  isAuth:boolean,
+  listUser:USER[]
 }
 const initialState:TypeUSer = {
   currentUser:null,
@@ -27,7 +28,10 @@ const userSlice = createSlice({
    },
    updateCurrentUser:(state,action) => {
      state.currentUser = action.payload;
-   }
+   },
+  fetchListUser:(state,action) => {
+    state.listUser = action.payload
+  }
 }})
 export const {reducer:userReducer} = userSlice;
 export const {actions:userActions} = userSlice;

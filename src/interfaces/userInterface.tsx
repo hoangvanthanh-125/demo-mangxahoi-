@@ -5,4 +5,5 @@ export interface USER{
   photoURL:string,
   urlBia?:string,
   id?:string,
+  active?:boolean
 }

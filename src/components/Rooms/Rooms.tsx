@@ -6,11 +6,18 @@ import RoomItem from "../RoomItem/RoomItem";
 import useStyle from "./style";
 import qs from "query-string";
 import { useLocation } from "react-router-dom";
+import { USER } from "../../interfaces/userInterface";
 interface Props {
-  listRoom: ROOM[];
+  listRoom: NEW_ROOM[],
+  handleClickSetCurrentRoom:(room:NEW_ROOM) => void
+}
+interface NEW_ROOM extends ROOM{
+  userReceive:USER
 }
 
-function Rooms({ listRoom }: Props) {
+function Rooms({ listRoom,handleClickSetCurrentRoom }: Props) {
+  console.log(listRoom.length);
+  
   const classes = useStyle();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const { search } = useLocation();
@@ -18,9 +25,10 @@ function Rooms({ listRoom }: Props) {
   const renderListRoom = () => {
     let xhtml = null;
     if (listRoom.length > 0) {
-      xhtml = listRoom.map((room: ROOM, index: number) => {
+      xhtml = listRoom.map((room: NEW_ROOM, index: number) => {
         return (
           <div
+           onClick ={() =>  handleClickSetRoom(room)}
             key={index}
             style={{
               background: `${obj?.idRoom === room?.idRoom ? "lightgray" : ""}`,
@@ -33,6 +41,12 @@ function Rooms({ listRoom }: Props) {
     }
     return xhtml;
   };
+  const handleClickSetRoom = (room:NEW_ROOM) => {
+    if(handleClickSetCurrentRoom){
+      handleClickSetCurrentRoom(room);
+    }
+
+  }
   return (
     <div className={classes.wrap}>
       <div className={classes.header}>{currentUser?.displayName}</div>

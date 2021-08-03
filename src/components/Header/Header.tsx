@@ -3,6 +3,7 @@ import { SearchOutlined } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import HomeIcon from "@material-ui/icons/Home";
 import TelegramIcon from "@material-ui/icons/Telegram";
+import axios from "axios";
 import firebase from "firebase";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -32,7 +33,8 @@ function Header() {
     firebase
       .auth()
       .signOut()
-      .then(() => {
+      .then( async () => {
+      
         console.log("da log out");
         history.push("/login");
         localStorage.removeItem("token");

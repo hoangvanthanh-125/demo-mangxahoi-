@@ -126,9 +126,9 @@ function Personal() {
           idRoom: getId(),
           createdAt: Date.now(),
           members: [user.uid, currentUser?.uid],
+          
         } as ROOM)
         .then((res) => {
-          // history.push(`/chat/${room.}`);
           res.get().then((docs) => {
             history.push({
               pathname: "/chat",
@@ -147,8 +147,8 @@ function Personal() {
             onClick={() => handleClickAnhBia()}
             className={classes.anhbia}
             src={`${
-              user.urlBia
-                ? user.urlBia
+              user?.urlBia
+                ? user?.urlBia
                 : "https://st.quantrimang.com/photos/image/2020/07/30/Hinh-Nen-Trang-10.jpg"
             }`}
             alt=""

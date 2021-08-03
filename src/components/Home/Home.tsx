@@ -9,6 +9,7 @@ import firebase from "firebase";
 import axios from "axios";
 import { USER } from "../../interfaces/userInterface";
 import ActiveUser from "../ActiveUser/ActiveUser";
+import { userActions } from "../../redux/slice/userSlice";
 function Home() {
   const { loading } = useAppSelector((state) => state.posts);
   const dispatch = useAppDispatch();
@@ -20,12 +21,19 @@ function Home() {
       .then((result) => {
         const { user } = result;
         if (result.additionalUserInfo?.isNewUser) {
+          dispatch(userActions.fetchCurrentUser({
+            displayName: user?.displayName,
+            uid: user?.uid,
+            photoURL: user?.photoURL,
+            email: user?.email,
+            urlBia:'',
+          }));
           axios.post("https://601014b66c21e1001704fe27.mockapi.io/api/users", {
             displayName: user?.displayName,
             uid: user?.uid,
             photoURL: user?.photoURL,
             email: user?.email,
-            urlBia:''
+            urlBia:'',
           } as USER);
         }
       })

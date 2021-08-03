@@ -25,9 +25,10 @@ export default makeStyles((theme) => ({
   anhbia:{
    width:'100%',
    maxWidth:'100%',
-   height:'100%',
+   maxHeight:'100%',
    objectFit:'cover',
-   borderRadius:'5px'
+   borderRadius:'5px',
+   border:'1px solid lightgray'
   },
   buttonAnhBia:{
   background:'white',
