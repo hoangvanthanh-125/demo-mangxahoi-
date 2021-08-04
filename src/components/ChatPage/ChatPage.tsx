@@ -12,7 +12,7 @@ import qs from "query-string";
 import { USER } from "../../interfaces/userInterface";
 function ChatPage() {
   const classes = useStyles();
-  const { search } = useLocation();
+  const { search,state } = useLocation();
   const currentUser = useAppSelector((state) => state.user.currentUser!);
   const [listRoom, setListRoom] = useState<NEW_ROOM[]>([]);
   const [listMessage, setListMessage] = useState<MESSAGE[]>([]);
@@ -22,7 +22,8 @@ function ChatPage() {
 
   var list: NEW_ROOM[] = [];
   const { listUser } = useAppSelector((state) => state.user);
-
+  console.log(useLocation());
+  
   interface NEW_ROOM extends ROOM {
     userReceive: USER;
   }
@@ -74,6 +75,18 @@ function ChatPage() {
         });
     }
   }, [search]);
+  useEffect(() => {
+ console.log(state);
+ const room = (state as any)?.newRoom
+ const uidReceive = room?.members?.filter(
+  (mem: string) => mem !== currentUser?.uid!
+)[0];
+ const userReceive = listUser?.find(
+  (user: USER) => user?.uid === uidReceive
+);
+const currentRoom:NEW_ROOM = {...room,userReceive};
+setCurrentRoom(currentRoom);
+  },[state])
 
   const handleClickSetCurrentRoom = (room: NEW_ROOM) => {
     setCurrentRoom(room);

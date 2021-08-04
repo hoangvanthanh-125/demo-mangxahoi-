@@ -114,6 +114,9 @@ function Personal() {
         history.push({
           pathname: "/chat",
           search: `?idRoom=${doc.data()?.idRoom}`,
+          state: {
+            newRoom: doc?.data(),
+          },
         });
         return;
       }
@@ -126,13 +129,16 @@ function Personal() {
           idRoom: getId(),
           createdAt: Date.now(),
           members: [user.uid, currentUser?.uid],
-          
         } as ROOM)
         .then((res) => {
           res.get().then((docs) => {
             history.push({
               pathname: "/chat",
               search: `?idRoom=${docs?.data()?.idRoom}`,
+
+              state: {
+                newRoom: docs?.data(),
+              },
             });
           });
         });
@@ -180,7 +186,11 @@ function Personal() {
         </div>
         <div className={classes.nameUser}>{user?.displayName}</div>
         {currentUser?.uid !== user?.uid && (
-          <Button className={classes.buttonInbox} variant="contained" onClick={() => handClickAddRoomChat()}>
+          <Button
+            className={classes.buttonInbox}
+            variant="contained"
+            onClick={() => handClickAddRoomChat()}
+          >
             Nhắn tin
           </Button>
         )}
