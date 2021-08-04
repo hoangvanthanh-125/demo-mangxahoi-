@@ -94,7 +94,7 @@ function CommentItem({ item, post }: Props) {
   };
   return (
     <div className={classes.wrap}>
-      <Avatar style={{cursor:'pointer'}} onClick={() => history.push(`/user/${item.userComment.uid}`)} src={item.userComment.photoURL} />
+      <Avatar style={{cursor:'pointer'}} onClick={() => history.push(`/user/${item.userComment?.uid}`)} src={item?.userComment?.photoURL} />
       <div className={classes.wrapcontent}>
         {user?.uid === item.userComment.uid && (
           <IconButton

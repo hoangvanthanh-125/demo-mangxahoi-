@@ -95,6 +95,7 @@ function FormChangeImage({ listPost, currentUser, type }: Props) {
             urlBia: url,
           }
         );
+        dispatch(userActions.fetchCurrentUser(res.data));
         await dispatch(
           addListPostActions({
             color: "white",
@@ -117,6 +118,7 @@ function FormChangeImage({ listPost, currentUser, type }: Props) {
             photoURL: url,
           }
         );
+        dispatch(userActions.fetchCurrentUser(res.data));
         await dispatch(
           addListPostActions({
             color: "white",
@@ -126,13 +128,13 @@ function FormChangeImage({ listPost, currentUser, type }: Props) {
             postId: getId(),
             title: "",
             urlImage: url,
-            userPost: currentUser,
+            userPost: {...currentUser,photoURL:url},
             contentType: "đã cập nhật ảnh đại diện ",
             uidUserPost:currentUser.uid
           } as POST)
         );
       }
-      dispatch(userActions.fetchCurrentUser(res.data));
+    
       dispatch(uiActions.closeModal());
     }
   };

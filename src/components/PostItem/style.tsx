@@ -229,5 +229,11 @@ export default makeStyles((theme) => ({
     justifyContent:'space-between',
     alignItems:'center'
   },
+  wrapStatus:{
+    textAlign:'start',
+    maxWidth:'100%',
+    marginRight:25
+  },
+ 
   
 }));

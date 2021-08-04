@@ -39,7 +39,6 @@ function PostItem({ post }: PropsPostItem) {
   const { currentUser } = useAppSelector((state) => state.user);
   const {
     id,
-  
     listComment,
     listLike,
     title,
@@ -223,12 +222,12 @@ function PostItem({ post }: PropsPostItem) {
           >
             <Avatar style={{ width: 30, height: 30 }} src={photoURL} />
             <div className={classes.nameuser}>
-             <div> {`${displayName}`} <span>{contentType && contentType}</span></div>
+             <div className={classes.wrapStatus}> {`${displayName}`} <span>{contentType && contentType}</span></div>
                <div className={classes.timePost}>{FormatTime(createdAt as number)}</div>
             </div>
           </div>
           {/* <span>{createdAt}</span> */}
-          {user?.uid === post.userPost.uid && !contentType && (
+          {user?.uid === post.userPost.uid  && (
             <IconButton
               aria-describedby={idPopOver}
               onClick={handleClick}
