@@ -1,9 +1,8 @@
-import { Avatar, Popover, Tooltip, Typography } from "@material-ui/core";
+import { Avatar, Badge, Popover, Tooltip, Typography } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import HomeIcon from "@material-ui/icons/Home";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import axios from "axios";
 import firebase from "firebase";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -12,7 +11,6 @@ import { useAppSelector } from "../../redux/hook";
 import Notify from "../Notify/Notify";
 import Search from "../Search/Search";
 import useStyles from "./style";
-
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const user = useAppSelector((state) => state.user.currentUser);
@@ -28,13 +26,19 @@ function Header() {
   const id = open ? "simple-popover" : undefined;
   const history = useHistory();
   const classes = useStyles();
+  const { listRoom } = useAppSelector((state) => state.rooms);
+  const totalNotifyMess = listRoom?.reduce((total: number, room) => {
+    if (room?.lastMessage?.checked === false && room?.lastMessage?.userSentUid !== user?.uid) {
+      return total + 1;
+    }
+    return total;
+  }, 0);
   const [openSearch, setOpenSearch] = useState(false);
   const handleLogout = () => {
     firebase
       .auth()
       .signOut()
-      .then( async () => {
-      
+      .then(async () => {
         console.log("da log out");
         history.push("/login");
         localStorage.removeItem("token");
@@ -66,7 +70,11 @@ function Header() {
         <CustomLink to="/" label={<HomeIcon />} activeOnlyWhenExact={true} />
         <CustomLink
           to="/chat"
-          label={<TelegramIcon />}
+          label={
+            <Badge badgeContent={totalNotifyMess} color="secondary">
+              <TelegramIcon />
+            </Badge>
+          }
           activeOnlyWhenExact={true}
         />
 

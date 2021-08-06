@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../redux/hook";
+import ImageIcon from "@material-ui/icons/Image";
+import SendIcon from "@material-ui/icons/Send";
 import firebase from "firebase";
-import { MESSAGE } from "../../interfaces/chatInterface";
+import React, { useEffect, useState } from "react";
+import {
+  LAST_MESSAGE,
+  MESSAGE,
+  NEW_ROOM,
+} from "../../interfaces/chatInterface";
+import { useAppSelector } from "../../redux/hook";
 import { getId } from "../FormComment/FormComment";
 import useStyle from "./style";
-import SendIcon from "@material-ui/icons/Send";
-import ImageIcon from "@material-ui/icons/Image";
 interface Props {
   idRoom: string;
   dummy: any;
+  id: string;
+  currentRoom: NEW_ROOM;
 }
 
-function FormChat({ idRoom, dummy }: Props) {
+function FormChat({ idRoom, dummy, id, currentRoom }: Props) {
   const classes = useStyle();
   const [text, setText] = useState("");
   const currrentUser = useAppSelector((state) => state.user.currentUser);
@@ -19,7 +25,6 @@ function FormChat({ idRoom, dummy }: Props) {
   const [image, setImage] = useState<any>(null);
   const storage = firebase.storage();
   const [progress, setProgress] = useState(0);
-
   useEffect(() => {
     if (image) {
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
@@ -64,7 +69,19 @@ function FormChat({ idRoom, dummy }: Props) {
           } as MESSAGE);
         setUrl("");
       };
+      const newLastMessage = {
+        idMessage: getId(),
+        content: text,
+        idRoom,
+        createdAt: Date.now() as number,
+        userSentUid: currrentUser?.uid,
+        urlImg: url,
+        checked: false,
+      } as LAST_MESSAGE;
       sentImg();
+      firebase.firestore().collection("rooms").doc(id).update({
+        lastMessage: newLastMessage,
+      });
     }
   }, [url]);
   const handleOnChange = (e: any) => {
@@ -87,6 +104,24 @@ function FormChat({ idRoom, dummy }: Props) {
           userSentUid: currrentUser?.uid,
         } as MESSAGE);
       setText("");
+      const newLastMessage = {
+        idMessage: getId(),
+        content: text,
+        idRoom,
+        createdAt: Date.now() as number,
+        userSentUid: currrentUser?.uid,
+        checked: false,
+      } as LAST_MESSAGE;
+      firebase.firestore().collection("rooms")?.doc(id).update({
+        lastMessage: newLastMessage,
+        createdAt: 90,
+      });
+      // dispatch(
+      //   roomActions.updateRoom({
+      //     ...currentRoom,
+      //     lastMessage: newLastMessage,
+      //   })
+      // );
     }
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };

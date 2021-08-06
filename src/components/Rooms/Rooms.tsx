@@ -1,16 +1,21 @@
 import qs from "query-string";
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { ROOM } from "../../interfaces/chatInterface";
+import { MESSAGE, ROOM } from "../../interfaces/chatInterface";
 import { USER } from "../../interfaces/userInterface";
-import { useAppSelector } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import RoomItem from "../RoomItem/RoomItem";
 import useStyle from "./style";
+import firebase from "firebase";
+import { roomActions } from "../../redux/slice/roomChatSlice";
 interface Props {
   listRoom: NEW_ROOM[];
   handleClickSetCurrentRoom: (room: NEW_ROOM) => void;
   setOpenModal: () => void;
   closeModal: () => void;
+  currentRoom: NEW_ROOM;
+  listMessage: MESSAGE[],
+  loading:boolean
 }
 interface NEW_ROOM extends ROOM {
   userReceive: USER;
@@ -21,27 +26,34 @@ function Rooms({
   handleClickSetCurrentRoom,
   setOpenModal,
   closeModal,
+  listMessage,
+  currentRoom,
+  loading
 }: Props) {
-  console.log(listRoom.length);
-
   const classes = useStyle();
   const currentUser = useAppSelector((state) => state.user.currentUser);
   const { search } = useLocation();
   const obj = qs.parse(search);
+  const user = useAppSelector((state) => state.user.currentUser);
+  const dispatch = useAppDispatch();
   const renderListRoom = () => {
     let xhtml = null;
     if (listRoom.length > 0) {
       xhtml = listRoom.map((room: NEW_ROOM, index: number) => {
         return (
-          <div
-            onClick={() => handleClickSetRoom(room)}
-            key={index}
-            style={{
-              background: `${obj?.idRoom === room?.idRoom ? "lightgray" : ""}`,
-            }}
-          >
-            <RoomItem room={room} />
-          </div>
+         <div
+         onClick={() => handleClickSetRoom(room)}
+         key={index}
+         style={{
+           background: `${obj?.idRoom === room?.idRoom ? "lightgray" : ""}`,
+         }}
+       >
+         <RoomItem
+         loading={loading}
+           lastMessage={listMessage[listMessage?.length - 1]}
+           room={room}
+         />
+       </div>
         );
       });
     }
@@ -51,6 +63,23 @@ function Rooms({
     if (handleClickSetCurrentRoom) {
       handleClickSetCurrentRoom(room);
       setOpenModal();
+      if (
+        currentRoom?.lastMessage?.userSentUid !== user?.uid &&
+        currentRoom?.lastMessage?.createdAt
+      ) {
+        firebase.firestore().collection("rooms").doc(currentRoom?.id).update({
+          "lastMessage.checked": true,
+        });
+        dispatch(
+          roomActions.updateRoom({
+            ...room,
+            lastMessage: {
+              ...room?.lastMessage,
+              checked: true,
+            },
+          })
+        );
+      }
     }
   };
   return (

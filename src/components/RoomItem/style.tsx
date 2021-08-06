@@ -19,5 +19,26 @@ wrap:{
     textAlign:'start',
     flex:1
   }
+},
+wrapContent:{
+  display:'flex',
+  flexDirection:'column',
+  justifyContent:'center',
+  width:'100%'
+
+},
+wrapLastMessage:{
+  color:'gray',
+  width:'100%',
+ display:'flex',
+ justifyContent:'space-around',
+ alignContent:'center',
+ '& span:first-child':{
+   
+  
+   
+   overflow:'hidden',
+   display:'flex'
+  }
 }
 }))

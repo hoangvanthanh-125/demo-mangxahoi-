@@ -22,7 +22,7 @@ import { uiActions } from "../../redux/slice/uiSilce";
 import FormChangeImage from "../FormChangeImage/FormChangeImage";
 import Loading from "../../common/loading/loading";
 import { useHistory, useParams } from "react-router-dom";
-import { ROOM } from "../../interfaces/chatInterface";
+import { LAST_MESSAGE, ROOM } from "../../interfaces/chatInterface";
 import { getId } from "../FormComment/FormComment";
 function Personal() {
   const { id } = useParams<{ id: string }>();
@@ -115,7 +115,7 @@ function Personal() {
           pathname: "/chat",
           search: `?idRoom=${doc.data()?.idRoom}`,
           state: {
-            newRoom: doc?.data(),
+            newRoom: {...doc?.data(),id:doc?.id},
           },
         });
         return;
@@ -129,6 +129,7 @@ function Personal() {
           idRoom: getId(),
           createdAt: Date.now(),
           members: [user.uid, currentUser?.uid],
+          lastMessage:{} as LAST_MESSAGE
         } as ROOM)
         .then((res) => {
           res.get().then((docs) => {
@@ -137,7 +138,7 @@ function Personal() {
               search: `?idRoom=${docs?.data()?.idRoom}`,
 
               state: {
-                newRoom: docs?.data(),
+                newRoom: {...docs?.data(),id:docs?.id},
               },
             });
           });

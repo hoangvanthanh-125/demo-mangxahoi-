@@ -1,42 +1,72 @@
-import { Avatar } from '@material-ui/core';
-import axios from 'axios';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import { ROOM } from '../../interfaces/chatInterface';
-import { USER } from '../../interfaces/userInterface';
-import { useAppSelector } from '../../redux/hook';
-import useStyle from './style'
+import { Avatar } from "@material-ui/core";
+import React from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { FormatTime } from "../../common/formatTime";
+import { MESSAGE, NEW_ROOM } from "../../interfaces/chatInterface";
+import { useAppSelector } from "../../redux/hook";
+import useStyle from "./style";
 interface Props {
-  room: ROOM
+  room: NEW_ROOM,
+  lastMessage:MESSAGE,
+  loading:boolean
 }
 
-function RoomItem({ room }: Props) {
+function RoomItem({ room}: Props) {
   const { pathname } = useLocation();
   const history = useHistory();
   const classes = useStyle();
-  const currentUser = useAppSelector(state => state.user.currentUser);
-  const [userReceive, setUserReceive] = useState<USER>({} as USER);
-  const uid = room.members.filter((mem: string) => mem !== currentUser?.uid!)[0];
-
-
-  useEffect(() => {
-    axios.get(`https://601014b66c21e1001704fe27.mockapi.io/api/users/?uid=${uid}`)
-      .then(res => setUserReceive(res.data[0]))
-  }, [uid])
+  const currentUser = useAppSelector((state) => state.user.currentUser);
+  var lastMess = "";
+  if (room?.lastMessage && room?.lastMessage?.createdAt) {
+    if (room?.lastMessage?.urlImg) {
+      if (room?.lastMessage?.userSentUid === currentUser?.uid) {
+        lastMess = "Bạn đã gửi 1 ảnh";
+      } else {
+        lastMess = "Đã gửi 1 ảnh";
+      }
+    } else {
+      if (room?.lastMessage?.userSentUid === currentUser?.uid) {
+        lastMess = `Bạn : ${room?.lastMessage?.content}`;
+      } else {
+        lastMess = `${room?.lastMessage?.content}`;
+      }
+    }
+  }
   const hanldeClickRoom = () => {
     history.push({
       pathname,
-      search: `?idRoom=${room.idRoom}`
-    })
-  }
+      search: `?idRoom=${room.idRoom}`,
+    });
+  };
 
   return (
-    <div  onClick={() => hanldeClickRoom()} className={classes.wrap}>
-      <Avatar src={userReceive?.photoURL} />
-      <span> {userReceive?.displayName}</span>
+   <div onClick={() => hanldeClickRoom()} className={classes.wrap}>
+    <Avatar src={room?.userReceive?.photoURL} />
+    <div className={classes.wrapContent}>
+      <span> {room?.userReceive?.displayName}</span>
+      {lastMess && (
+        <div className={classes.wrapLastMessage}>
+          <span
+            style={{
+              fontWeight:
+                room?.lastMessage?.userSentUid !== currentUser?.uid &&
+                room?.lastMessage?.checked === false
+                  ? "bold"
+                  : "normal",
+              color:
+                room?.lastMessage?.userSentUid !== currentUser?.uid &&
+                room?.lastMessage?.checked === false
+                  ? "black"
+                  : "gray",
+            }}
+          >
+            {lastMess}
+          </span>
+          <span>{FormatTime(room?.lastMessage?.createdAt!)}</span>
+        </div>
+      )}
     </div>
+  </div>
   );
 }
 
