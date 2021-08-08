@@ -49,7 +49,8 @@ export default makeStyles((theme) => ({
   modalChat:{
     width:'100%',
     height:'100vh',
-    background:'red'
+    background:'white',
+  
   }
 
 }))

@@ -2,9 +2,10 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
   home:{
-    position:'relative',
+   display:'flex',
+   justifyContent:'center',
     boxSizing:'border-box',
-    padding:'0 52px',
+    padding:'0 150px',
     [theme.breakpoints.down('sm')]:{
       padding:'0px 20px'
     },
@@ -26,6 +27,7 @@ export default makeStyles((theme) => ({
   listUser:{
     position:'fixed',
     top:78,
+    right:150
   }
 
 }))

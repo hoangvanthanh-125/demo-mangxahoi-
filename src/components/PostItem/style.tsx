@@ -2,65 +2,64 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
   card: {
+
     wordWrap: "break-word",
-    boxSizing:'border-box',
+    boxSizing: 'border-box',
     background: "white",
     padding: 0,
     width: "100%",
-     border:'1px solid lightgray',
-    //  boxShadow:'1px 1px 0px lightgray',
+    boxShadow: ' rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
     borderRadius: "5px",
     [theme.breakpoints.down("xs")]: {
       borderRadius: 0,
     },
-    marginTop:15
-    // marginBottom: 15,
-   
+    marginTop: 15
+
   },
   wrapHeader: {
-    position:'relative',
+    position: 'relative',
     display: "flex",
     // flexDirection:'column',
     alignItems: "center",
     "& span": {
       color: "grey",
       fontSize: 15,
-      [theme.breakpoints.down('xs')]:{
+      [theme.breakpoints.down('xs')]: {
         fontSize: 12,
       }
     },
   },
   header: {
-    cursor:'pointer',
+    cursor: 'pointer',
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
     padding: "10px",
   },
-  moreIcon:{
-  position:'absolute',
-  top:0,
-  right:5
+  moreIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 5
   },
   nameuser: {
-    
-    display:'flex',
-    flexDirection:'column',
-    justifyContent:'flex-start',
-    alignItems:'start',
-   
+
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'start',
+
     fontWeight: "bold",
     marginLeft: 10,
-    
+
   },
-  timePost:{
-    color:'gray',
-    fontSize:10
+  timePost: {
+    color: 'gray',
+    fontSize: 10
 
   },
   wrapContent: {
     cursor: "pointer",
-    
+
   },
   cardContent: {
     wordWrap: "break-word",
@@ -76,7 +75,7 @@ export default makeStyles((theme) => ({
     },
   },
   cardAction: {
-    borderTop:'0.5px solid lightgray',
+    borderTop: '0.5px solid lightgray',
     boxSizing: "border-box",
     position: "relative",
 
@@ -118,7 +117,7 @@ export default makeStyles((theme) => ({
     boxSizing: "border-box",
   },
   image: {
-    objectFit:'cover',
+    objectFit: 'cover',
     width: "100%",
     height: "400px",
     [theme.breakpoints.down("sm")]: {
@@ -156,12 +155,12 @@ export default makeStyles((theme) => ({
       color: "gray",
     },
   },
-  totalLike:{
-   cursor:'pointer',
-  
-   "&:hover":{
-    textDecoration:'underline'
-   }
+  totalLike: {
+    cursor: 'pointer',
+
+    "&:hover": {
+      textDecoration: 'underline'
+    }
   },
   blockTitle: {
     boxSizing: "border-box",
@@ -170,7 +169,7 @@ export default makeStyles((theme) => ({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-   height:400,
+    height: 400,
 
     color: "white",
     fontWeight: "bold",
@@ -181,11 +180,11 @@ export default makeStyles((theme) => ({
       height: "100%",
     },
   },
-  wrapListPeopleLike:{
-     minHeight:'50vh',
-     height:'10vh',
-     overflowY:'auto',
-     '&::-webkit-scrollbar': {
+  wrapListPeopleLike: {
+    minHeight: '50vh',
+    height: '10vh',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
       width: '0.4em'
     },
     '&::-webkit-scrollbar-track': {
@@ -194,46 +193,47 @@ export default makeStyles((theme) => ({
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(0,0,0,.1)',
-      outline: '1px solid slategrey'},
-     [theme.breakpoints.down('xs')]:{
-       height:'60vh',
-     
-     
-     }
+      outline: '1px solid slategrey'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '60vh',
+
+
+    }
 
   },
- itemPeopleLike:{
-   cursor:'pointer',
-    width:'100%',
+  itemPeopleLike: {
+    cursor: 'pointer',
+    width: '100%',
     // marginTop:10,
-    display:'flex',
-    justifyContent:'flex-start',
-    alignItems:'center',
-    boxSizing:'border-box',
-    paddingLeft:20,
-     padding:20,
-    height:100,
-    '&:hover':{
-      background:'lightgray'
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    paddingLeft: 20,
+    padding: 20,
+    height: 100,
+    '&:hover': {
+      background: 'lightgray'
     },
-   
-   
-   
+
+
+
   },
-  nameUserLike:{
-    marginLeft:15
+  nameUserLike: {
+    marginLeft: 15
   },
-  headerModal:{
-    width:'100%',
-    display:'flex',
-    justifyContent:'space-between',
-    alignItems:'center'
+  headerModal: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-  wrapStatus:{
-    textAlign:'start',
-    maxWidth:'100%',
-    marginRight:25
+  wrapStatus: {
+    textAlign: 'start',
+    maxWidth: '100%',
+    marginRight: 25
   },
- 
-  
+
+
 }));

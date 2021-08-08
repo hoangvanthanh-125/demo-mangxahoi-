@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   
   wrapHeader:{
+    boxShadow: ' rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
     boxSizing:'border-box',
     background:'white',
     width:'100%',
@@ -11,7 +12,7 @@ export default makeStyles((theme) => ({
     justifyContent:'space-around',
     alignItems:'center',
     padding:'10px 0',
-    border:'1px solid lightgray',
+   
     height:80
 
   },
@@ -54,6 +55,8 @@ export default makeStyles((theme) => ({
   animation:`$myEffect 3000s ease-in-out`
   },
   title:{
+    
+    marginLeft:6,
     cursor:'pointer',
     animation:`$myEffect 1000ms ease-in-out`,
     [theme.breakpoints.down('xs')]:{
@@ -71,5 +74,19 @@ export default makeStyles((theme) => ({
         background:'lightgray'
       }
     }
+  },
+  buttonLogin:{
+    background:'black',
+    color:'white',
+    borderRadius:5,
+    outline:'none',
+    border:'1px solid gray',
+    padding:'5px 7px',
+    cursor:'pointer',
+    fontWeight:'bold',
+    '&:hover':{
+      background:'gray'
+    }
+
   }
 }))

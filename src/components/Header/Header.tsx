@@ -5,8 +5,9 @@ import HomeIcon from "@material-ui/icons/Home";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import firebase from "firebase";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { CustomLink } from "../../common/customLink";
+import { USER } from "../../interfaces/userInterface";
 import { useAppSelector } from "../../redux/hook";
 import Notify from "../Notify/Notify";
 import Search from "../Search/Search";
@@ -21,14 +22,17 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const { pathname } = useLocation();
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const history = useHistory();
   const classes = useStyles();
   const { listRoom } = useAppSelector((state) => state.rooms);
   const totalNotifyMess = listRoom?.reduce((total: number, room) => {
-    if (room?.lastMessage?.checked === false && room?.lastMessage?.userSentUid !== user?.uid) {
+    if (
+      room?.lastMessage?.checked === false &&
+      room?.lastMessage?.userSentUid !== user?.uid
+    ) {
       return total + 1;
     }
     return total;
@@ -48,6 +52,16 @@ function Header() {
         // An error happened.
       });
   };
+  const handleClickChat = () => {
+    if (user) {
+      history.push("/chat");
+    } else {
+      history.push("/login");
+    }
+  };
+  const handleClickUser = (option: USER) => {
+    history.push(`user/${option?.uid}`);
+  };
   return !openSearch ? (
     <div className={classes.wrapHeader}>
       <div className={classes.headerLeft}>
@@ -60,7 +74,7 @@ function Header() {
         </Typography>
       </div>
       <div className={classes.headerMiddle}>
-        <Search />
+        <Search clickUSer={handleClickUser} />
       </div>
       <div className={classes.headerRight}>
         <SearchOutlined
@@ -68,27 +82,36 @@ function Header() {
           className={classes.iconSearch}
         />
         <CustomLink to="/" label={<HomeIcon />} activeOnlyWhenExact={true} />
-        <CustomLink
-          to="/chat"
-          label={
-            <Badge badgeContent={totalNotifyMess} color="secondary">
-              <TelegramIcon />
-            </Badge>
-          }
-          activeOnlyWhenExact={true}
-        />
+
+        <Badge
+          onClick={() => handleClickChat()}
+          badgeContent={totalNotifyMess}
+          color="secondary"
+        >
+          <TelegramIcon
+            style={{ color: `${pathname === "/chat" ? "red" : "black"}` }}
+          />
+        </Badge>
 
         <Notify />
         {/* <AddAlertIcon /> */}
-        <Tooltip title={user?.displayName!} aria-label="add">
-          <Avatar
-            aria-describedby={id}
-            onClick={handleClick}
-            style={{ width: 25, height: 25, cursor: "pointer" }}
-            src={user?.photoURL}
-          />
-        </Tooltip>
-
+        {user ? (
+          <Tooltip title={user?.displayName!} aria-label="add">
+            <Avatar
+              aria-describedby={id}
+              onClick={handleClick}
+              style={{ width: 25, height: 25, cursor: "pointer" }}
+              src={user?.photoURL}
+            />
+          </Tooltip>
+        ) : (
+          <button
+            className={classes.buttonLogin}
+            onClick={() => history.push("/login")}
+          >
+            Login
+          </button>
+        )}
         <Popover
           id={id}
           open={open}
@@ -116,7 +139,7 @@ function Header() {
     <div className={classes.wrapHeader}>
       <ArrowBackIcon onClick={() => setOpenSearch(false)} />
       <div className={classes.searchXS} style={{ flex: 1 }}>
-        <Search />
+        <Search clickUSer={handleClickUser} />
       </div>
     </div>
   );

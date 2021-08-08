@@ -2,11 +2,17 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
   boxChat: {
+    boxSizing:'border-box',
+    position:'relative',
     background: 'white',
     paddingBottom: 15,
-    border:'1px solid lightgray'
+    boxShadow: ' rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
+    [theme.breakpoints.down('xs')]:{
+      height:'100vh'
+    }
   },
   header: {
+    boxSizing:'border-box',
     position:'relative',
     display: 'flex',
     justifyContent: 'flex-start',
@@ -48,6 +54,14 @@ export default makeStyles((theme) => ({
     }
 
   },
+  formchat:{
+position:'absolute',
+bottom:0,
+right:0,
+left:0,
+zIndex:2
+  },
+
   noChat:{
     height:463,
     background:'white ',
@@ -56,6 +70,6 @@ export default makeStyles((theme) => ({
     alignItems:'center',
     fontSize:'x-large',
     fontWeight:'bold',
-    border:'1px solid lightgray'
+    boxShadow: ' rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
   }
 }))

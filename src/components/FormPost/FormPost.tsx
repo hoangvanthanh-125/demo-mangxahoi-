@@ -4,9 +4,11 @@ import InsertPhotoIcon from "@material-ui/icons/InsertPhoto";
 import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 import firebase from "firebase";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { AsyncUser } from "../../common/AsyncUser";
 import { COMMENT, POST } from "../../interfaces/postInterface";
 import { USER } from "../../interfaces/userInterface";
+import Fade from '@material-ui/core/Fade';
 import {
   addListPostActions,
   updatePostActions,
@@ -36,6 +38,7 @@ function FormPost({ post }: Props) {
   const storage = firebase.storage();
   const [text, setText] = useState("");
   const user = useAppSelector((state) => state.user.currentUser);
+  const history = useHistory();
   const handleChange = async (e: any) => {
     if (e.target.files[0]) {
       await setImage(e.target.files[0]);
@@ -123,7 +126,7 @@ function FormPost({ post }: Props) {
         listLike: [] as USER[],
         listComment: [] as COMMENT[],
         contentType: "",
-        uidUserPost:user?.uid!
+        uidUserPost: user?.uid!,
       };
       await dispatch(addListPostActions(newPost));
     }
@@ -134,31 +137,32 @@ function FormPost({ post }: Props) {
     dispatch(uiActions.closeModal());
     setColor("white");
   };
+  const handleClickFormPost = () => {
+    if (!user) {
+      history.push("/login");
+    } else setOpen(true);
+  };
   return (
-    <Grid
-      style={{ display: "flex", justifyContent: "center" }}
-      item
-      xs={12}
-      md={12}
-      sm={12}
-    >
-      <div className={classes.wrapPost}>
-        <Avatar className={classes.avatar}  src={user?.photoURL} />
+    <div className={classes.wrap}>
+        <div className={classes.wrapPost}>
+        <Avatar className={classes.avatar} src={user?.photoURL} />
         {!post && (
-          <div className={classes.post} onClick={() => setOpen(true)}>
+          <div className={classes.post} onClick={() => handleClickFormPost()}>
             {user?.displayName.split(" ")[0]} bạn đang nghĩ gì thế?
           </div>
         )}
       </div>
 
-      <Modal open={open} onClose={handleClose}>
-        <div className={classes.modal}>
+      <Modal  open={open} onClose={handleClose}>
+       <Fade in={open}>
+       <div className={classes.modal}>
           <div className={classes.header}>
             <KeyboardBackspaceIcon onClick={handleClose} />
             <Typography variant="h6">
               {post ? "Cập nhật bài viết" : "Đăng bài viết"}
             </Typography>
             <Button
+              disabled={!user || (!text && !url)}
               onClick={() => handleSubmit()}
               color="primary"
               variant="contained"
@@ -217,6 +221,7 @@ function FormPost({ post }: Props) {
               </div>
             </div>
             <Button
+              disabled={!user || (!text && !url)}
               onClick={() => handleSubmit()}
               variant="contained"
               fullWidth
@@ -226,8 +231,10 @@ function FormPost({ post }: Props) {
             </Button>
           </div>
         </div>
+       </Fade>
       </Modal>
-    </Grid>
+    </div>
+ 
   );
 }
 

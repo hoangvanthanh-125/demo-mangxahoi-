@@ -52,12 +52,14 @@ function BoxChat({ listMessage, idRoom, currentRoom, closeModal }: Props) {
         {renderMessItem()}
         <span ref={dummy}></span>
       </div>
-      <FormChat
-        currentRoom={currentRoom}
-        id={currentRoom?.id!}
-        dummy={dummy}
-        idRoom={idRoom}
-      />
+      <div className={classes.formchat}>
+        <FormChat
+          currentRoom={currentRoom}
+          id={currentRoom?.id!}
+          dummy={dummy}
+          idRoom={idRoom}
+        />
+      </div>
     </div>
   ) : (
     <div className={classes.noChat}>Gửi tin nhắn cho bạn bè</div>

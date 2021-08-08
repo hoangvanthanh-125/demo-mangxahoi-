@@ -97,7 +97,7 @@ function Notify() {
   };
   return (
     <>
-      <IconButton aria-describedby={id} onClick={handleClick}>
+      <IconButton style={{color:'black'}} aria-describedby={id} onClick={handleClick}>
         <Badge
           badgeContent={
             listNotify.filter((item) => item.clicked === false).length

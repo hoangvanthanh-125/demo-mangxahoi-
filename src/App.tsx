@@ -45,6 +45,7 @@ function App() {
         })
       );
     } else {
+      dispatch(userActions.fetchCurrentUser(null))
     }
   });
   useEffect(() => {

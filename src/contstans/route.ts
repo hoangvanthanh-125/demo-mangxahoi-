@@ -1,6 +1,7 @@
 import ChatPage from "../components/ChatPage/ChatPage";
 import CommentPage from "../components/CommentPage/CommentPage";
 import Home from "../components/Home/Home";
+import Login from "../components/Login/Login";
 import Personal from "../components/PersonalPage/Personal";
 
 export const USER_ROUTER = [
@@ -27,5 +28,11 @@ export const USER_ROUTER = [
     name: "",
     exact: false,
     component: ChatPage,
+  },
+  {
+    path: "/login",
+    name: "",
+    exact: false,
+    component: Login,
   },
 ];

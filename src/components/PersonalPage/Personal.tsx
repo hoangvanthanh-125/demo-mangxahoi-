@@ -96,62 +96,60 @@ function Personal() {
       )
     );
   };
-  const handleClickAnhBia = () => {
-    // if(user.urlBia && idPostBia){
-    //   history.push(`/comment/${idPostBia}`)
-    // }
-  };
   const handClickAddRoomChat = async () => {
-    var p = 0;
-    const room = await firebase
-      .firestore()
-      .collection("rooms")
-      .where("members", "array-contains", user?.uid)
-      .get();
-    room.docs.forEach((doc) => {
-      if (doc.data().members.includes(currentUser?.uid!)) {
-        p = 1;
-        history.push({
-          pathname: "/chat",
-          search: `?idRoom=${doc.data()?.idRoom}`,
-          state: {
-            newRoom: {...doc?.data(),id:doc?.id},
-          },
-        });
-        return;
-      }
-    });
-    if (p === 0) {
-      firebase
+    if (currentUser) {
+      var p = 0;
+      const room = await firebase
         .firestore()
         .collection("rooms")
-        .add({
-          idRoom: getId(),
-          createdAt: Date.now(),
-          members: [user.uid, currentUser?.uid],
-          lastMessage:{} as LAST_MESSAGE
-        } as ROOM)
-        .then((res) => {
-          res.get().then((docs) => {
-            history.push({
-              pathname: "/chat",
-              search: `?idRoom=${docs?.data()?.idRoom}`,
+        .where("members", "array-contains", user?.uid)
+        .get();
+      room.docs.forEach((doc) => {
+        if (doc.data().members.includes(currentUser?.uid!)) {
+          p = 1;
+          history.push({
+            pathname: "/chat",
+            search: `?idRoom=${doc.data()?.idRoom}`,
+            state: {
+              newRoom: { ...doc?.data(), id: doc?.id },
+            },
+          });
+          return;
+        }
+      });
+      if (p === 0) {
+        firebase
+          .firestore()
+          .collection("rooms")
+          .add({
+            idRoom: getId(),
+            createdAt: Date.now(),
+            members: [user.uid, currentUser?.uid],
+            lastMessage: {} as LAST_MESSAGE,
+          } as ROOM)
+          .then((res) => {
+            res.get().then((docs) => {
+              history.push({
+                pathname: "/chat",
+                search: `?idRoom=${docs?.data()?.idRoom}`,
 
-              state: {
-                newRoom: {...docs?.data(),id:docs?.id},
-              },
+                state: {
+                  newRoom: { ...docs?.data(), id: docs?.id },
+                },
+              });
             });
           });
-        });
+      }
+    } else {
+      history.push("/login");
     }
   };
 
   return !loading ? (
-    <Grid className={classes.container} container>
-      <Grid item sm={9} xs={12} md={9} className={classes.wrapInfo}>
+    <div className={classes.container}>
+      <div className={classes.wrapInfo}>
         <div className={classes.wrapAnhbia}>
           <img
-            onClick={() => handleClickAnhBia()}
             className={classes.anhbia}
             src={`${
               user?.urlBia
@@ -188,38 +186,27 @@ function Personal() {
         <div className={classes.nameUser}>{user?.displayName}</div>
         {currentUser?.uid !== user?.uid && (
           <Button
+            style={{ border: "1px solid lightgray" }}
             className={classes.buttonInbox}
-            variant="contained"
             onClick={() => handClickAddRoomChat()}
           >
             Nhắn tin
           </Button>
         )}
-      </Grid>
+      </div>
 
-      <Grid
-        className={classes.wrapbaiDang}
-        container
-        item
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        sm={12}
-        md={12}
-        xs={12}
-      >
-        <Grid item sm={12} md={7} xs={12}>
-          {currentUser?.uid === id && <FormPost />}
-          {listPostUser.length > 0 ? (
-            renderListPosts()
-          ) : (
-            <div className={classes.noPost}>Chưa có bài đăng</div>
-          )}
-        </Grid>
-      </Grid>
-    </Grid>
+      {currentUser?.uid === id && (
+        <div style={{ width: 600, maxWidth: "100vw" }}>
+          <FormPost />
+        </div>
+      )}
+
+      {listPostUser.length > 0 ? (
+        <div style={{ width: 600, maxWidth: "100vw" }}>{renderListPosts()}</div>
+      ) : (
+        <div className={classes.noPost}>Chưa có bài đăng</div>
+      )}
+    </div>
   ) : (
     <Loading />
   );

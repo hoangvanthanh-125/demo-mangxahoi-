@@ -2,17 +2,17 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
   wrap:{
-    border:'1px solid lightgray',
+    boxSizing:'border-box',
+    height:463,
     background:'white',
-    padding:10
+    padding:10,
+    boxShadow: ' rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
+    [theme.breakpoints.down('xs')]:{
+      height:'100vh'
+    }
   },
   header:{
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center',
-    padding:18,
-    borderBottom:'1px solid lightgray',
-    fontWeight:'bold',
+    padding:'5px 0 0 0',
   },
   body:{
     width:'100%',
@@ -34,6 +34,19 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]:{
       height:'calc(100vh - 165px)',
       
-    }
+    },
+  
+  },
+  noRoom:{
+    width:'100%',
+    height:240,
+    fontSize:'x-large',
+    fontWeight:'bold',
+    display:'flex',
+    justifyContent:'center',
+    alignContent:'center',
+    paddingTop:'45%',
+    
+    
   }
 }))

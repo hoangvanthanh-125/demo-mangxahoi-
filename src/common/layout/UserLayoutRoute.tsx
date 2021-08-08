@@ -11,13 +11,13 @@ function UserLayoutRoute({ component: MyComponent, ...rest }: Item) {
     <Route
       {...rest}
       render={(allProps) =>
-        token ? (
+        // token ? (
           <Dasboard>
             <MyComponent {...allProps} />
           </Dasboard>
-        ) : (
-          <Redirect to="/login" />
-        )
+        // ) : (
+        //   <Redirect to="/login" />
+        // )
       }
     />
   );

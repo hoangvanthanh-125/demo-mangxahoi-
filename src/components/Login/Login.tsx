@@ -1,7 +1,9 @@
 import { Button, Grid } from "@material-ui/core";
+import axios from "axios";
 import firebase from "firebase";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { USER } from "../../interfaces/userInterface";
 import { useAppDispatch } from "../../redux/hook";
 import { userActions } from "../../redux/slice/userSlice";
 import useStyles from "./style";
@@ -31,7 +33,31 @@ function Login() {
   const handleClickLogin = () => {
   //   firebase.auth()
   // .signInWithPopup(provider)
-    firebase.auth().signInWithRedirect(provider);
+    // firebase.auth().signInWithRedirect(provider);
+    firebase.auth()
+  .signInWithPopup(provider)
+  .then((result) => {
+    const { user } = result;
+    if (result.additionalUserInfo?.isNewUser) {
+      dispatch(userActions.fetchCurrentUser({
+        displayName: user?.displayName,
+        uid: user?.uid,
+        photoURL: user?.photoURL,
+        email: user?.email,
+        urlBia:'',
+      }));
+      axios.post("https://601014b66c21e1001704fe27.mockapi.io/api/users", {
+        displayName: user?.displayName,
+        uid: user?.uid,
+        photoURL: user?.photoURL,
+        email: user?.email,
+        urlBia:'',
+      } as USER);
+    }
+   history.goBack();
+    
+
+  });
   };
   return (
     <Grid container item className={classes.wrap}>

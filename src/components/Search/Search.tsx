@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import useStyles from "./style";
-import {
-  Avatar,
-} from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import { useEffect } from "react";
 import axios from "axios";
 import { USER } from "../../interfaces/userInterface";
 import { useHistory } from "react-router-dom";
-
-function Search() {
+interface Props {
+  clickUSer: (option: USER) => void;
+  height?:number
+}
+function Search({ clickUSer,height }: Props) {
   const [listUser, setListUser] = useState<USER[]>([]);
   const [textSearch, setTextSearch] = useState("");
   const history = useHistory();
@@ -38,12 +39,18 @@ function Search() {
       clearTimeout(timeout);
     };
   }, [textSearch]);
+
+  const handleClickUser = (option: USER) => {
+    if (clickUSer) {
+      clickUSer(option);
+    }
+  };
   return (
     <div className={classes.form}>
       <Autocomplete
+   
         className={classes.input}
         id="user-select"
-     
         options={listUser}
         classes={{
           option: classes.option,
@@ -51,7 +58,7 @@ function Search() {
         autoHighlight
         getOptionLabel={(option) => option.displayName}
         renderOption={(option) => (
-          <div onClick={() => history.push(`/user/${option.uid}`)} className={classes.user}>
+          <div onClick={() => handleClickUser(option)} className={classes.user}>
             <Avatar src={option.photoURL} />
             <span>{option.displayName}</span>
           </div>

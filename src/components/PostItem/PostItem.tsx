@@ -73,7 +73,12 @@ function PostItem({ post }: PropsPostItem) {
   }
 
   const handleClickLike = async () => {
+   if(user){
     await setLike((prev) => !prev);
+   }
+   else {
+     history.push('/login')
+   }
   };
       useEffect(() => {
     
@@ -213,7 +218,7 @@ function PostItem({ post }: PropsPostItem) {
     dispatch(uiActions.fetchBodyModal(<FormPost post={post} />));
   };
   return (
-    <Grid item sm={12} xs={12} md={12}>
+    
       <div className={classes.card}>
         <div className={classes.wrapHeader}>
           <div
@@ -319,7 +324,7 @@ function PostItem({ post }: PropsPostItem) {
           </div>
         </div>
       </div>
-    </Grid>
+  
   );
 }
 

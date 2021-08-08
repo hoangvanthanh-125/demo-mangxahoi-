@@ -4,7 +4,22 @@ export default makeStyles((theme) => ({
     marginTop:15,
     [theme.breakpoints.down('sm')]:{
       display:'none'
+    },
+    overflowY:'auto',
+    height:'calc(100vh - 110px)',
+    '&::-webkit-scrollbar': {
+      width: '0.5em'
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.1)',
+      outline: 'none',
+      borderRadius:5
     }
+  
 
   },
   header:{
