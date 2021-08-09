@@ -47,7 +47,7 @@ function FormComment({ post }: Props) {
         };
         setText("");
         dispatch(updatePostActions(newPost));
-        if (post.userPost.uid !== user?.uid!) {
+        if (post?.userPost?.uid !== user?.uid!) {
           firebase
             .firestore()
             .collection("notify")
@@ -63,11 +63,39 @@ function FormComment({ post }: Props) {
               clicked: false,
             } as NOTIFY);
         }
-      } 
-    }
-    else {
+        const { listComment } = post;
+        let listUid: string[] = [];
+        listComment?.forEach((comment: COMMENT) => {
+          if (
+            comment?.userComment?.uid !== user?.uid &&
+            comment?.userComment?.uid !== post?.uidUserPost
+          ) {
+            if (listUid.includes(comment?.userComment?.uid) === false) {
+              firebase
+                .firestore()
+                .collection("notify")
+                .add({
+                  idPost: post.id,
+                  uid: comment?.userComment?.uid,
+                  contentNotify:
+                    user?.uid !== post?.userPost?.uid
+                      ? ` cũng đã bình luận về bài viết của ${post?.userPost?.displayName}`
+                      : `cũng đã bình luận về bài viết của mình`,
+                  created: Date.now() as number,
+                  idNotify: getId(),
+                  photoURL: user?.photoURL!,
+                  nameUserMadeNotify: user?.displayName,
+                  watched: false,
+                  clicked: false,
+                } as NOTIFY);
+              listUid.push(comment?.userComment?.uid);
+            }
+          }
+        });
+      }
+    } else {
       history.push("/login");
-   }
+    }
   };
   return (
     <form onSubmit={handleSubmit} className={classes.wrapForm}>
